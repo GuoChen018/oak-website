@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --background: #E8EAED;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "SF Pro Rounded", -apple-system-ui-rounded, system-ui, sans-serif;
+}
+
+/* SF Pro Rounded - loaded from system (must be installed on macOS) */
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: local(".AppleSystemUIFontRounded-Regular"), 
+       local(".SFNSRounded-Regular"),
+       local("SFProRounded-Regular"),
+       local(".SF NS Rounded");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: local(".AppleSystemUIFontRounded-Medium"),
+       local(".SFNSRounded-Medium"),
+       local("SFProRounded-Medium");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: local(".AppleSystemUIFontRounded-Semibold"),
+       local(".SFNSRounded-Semibold"),
+       local("SFProRounded-Semibold");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: local(".AppleSystemUIFontRounded-Bold"),
+       local(".SFNSRounded-Bold"),
+       local("SFProRounded-Bold");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom animations */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}
