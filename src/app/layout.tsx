@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
+import { Delicious_Handrawn } from "next/font/google";
 import "./globals.css";
+
+const deliciousHandrawn = Delicious_Handrawn({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-handdrawn",
+});
 
 export const metadata: Metadata = {
   title: "Oak - Stay focused, with an animal pal & music",
@@ -12,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={deliciousHandrawn.variable}>
       <body className="antialiased">
         {children}
       </body>

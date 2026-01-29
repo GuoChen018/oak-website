@@ -82,7 +82,7 @@ export function NotchDemo() {
   if (!mounted) {
     return (
       <div className="flex justify-center">
-        <div className="w-[200px] h-[35px] bg-black rounded-[12px]" />
+        <div className="w-[200px] h-[24px] bg-black rounded-[10px]" />
       </div>
     );
   }
@@ -96,8 +96,8 @@ export function NotchDemo() {
         className="relative bg-black cursor-pointer overflow-hidden"
         animate={{
           width: isExpanded ? expandedWidth : collapsedWidth,
-          height: isExpanded ? 340 : 35,
-          borderRadius: isExpanded ? 25 : 12,
+          height: isExpanded ? 340 : 24,
+          borderRadius: isExpanded ? 25 : 10,
         }}
         transition={{
           type: "spring",
@@ -155,9 +155,9 @@ function CollapsedContent({ selectedPal, timeDisplay, isRunning }: CollapsedCont
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className="flex items-center justify-center h-full px-4 gap-3"
+      className="flex items-center justify-center h-full px-3 gap-2"
     >
-      <div className="relative w-6 h-6">
+      <div className="relative w-4 h-4">
         <Image
           src={`/focus-pals/${selectedPal}.png`}
           alt={selectedPal}
@@ -165,7 +165,7 @@ function CollapsedContent({ selectedPal, timeDisplay, isRunning }: CollapsedCont
           className="object-contain"
         />
       </div>
-      <span className={`text-white text-sm font-medium tabular-nums ${isRunning ? "animate-pulse" : ""}`}>
+      <span className={`text-white text-xs font-medium tabular-nums ${isRunning ? "animate-pulse" : ""}`}>
         {timeDisplay}
       </span>
     </motion.div>
