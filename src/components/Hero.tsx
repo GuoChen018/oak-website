@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { MacMenuBar } from "./MacMenuBar";
 import { NotchDemo } from "./NotchDemo";
 
@@ -8,7 +9,12 @@ export function Hero() {
   return (
     <section className="w-full px-4 pt-4 pb-12">
       {/* "Try it out!" annotation */}
-      <div className="flex justify-center mb-2">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
+        className="flex justify-center mb-2"
+      >
         <div className="flex items-start gap-1 ml-32">
           {/* Hand-drawn arrow */}
           <svg 
@@ -23,16 +29,21 @@ export function Hero() {
             Try it out!
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* Desktop Frame */}
-      <div className="relative max-w-6xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+        className="relative max-w-6xl mx-auto"
+      >
         {/* Wallpaper with menu bar overlay */}
-        <div className="relative rounded-xl shadow-2xl overflow-hidden">
+        <div className="relative rounded-xl border-2 border-black overflow-hidden">
           {/* Wallpaper Image */}
           <div className="relative w-full aspect-[16/5.5]">
             <Image
-              src="/wallpaper.png"
+              src="/mountain-scene.jpg"
               alt="Mountain wallpaper"
               fill
               className="object-cover"
@@ -47,22 +58,35 @@ export function Hero() {
             </MacMenuBar>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Tagline and CTA */}
       <div className="text-center mt-12">
-        <h1 className="text-6xl font-semibold text-gray-900 mb-3">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.1, ease: "easeOut" }}
+          className="text-6xl font-semibold text-gray-900 mb-6"
+        >
           Focus mode. Made delightful
-        </h1>
-        <p className="text-gray-600 text-xl mb-6 max-w-md mx-auto">
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.4, ease: "easeOut" }}
+          className="text-gray-600 text-xl mb-6 max-w-md mx-auto"
+        >
           Transform your Mac&apos;s notch into a focus space with calming music and a companion by your side.
-        </p>
-        <a
+        </motion.p>
+        <motion.a
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.6, ease: "easeOut" }}
           href="#waitlist"
-          className="inline-flex items-center justify-center px-6 py-3 bg-black text-white text-lg font-medium rounded-full hover:bg-gray-800 transition-colors"
+          className="inline-flex items-center justify-center px-6 py-3 bg-black text-white text-lg font-medium rounded-full hover:scale-[1.01] transition-transform"
         >
           Join Waitlist
-        </a>
+        </motion.a>
       </div>
     </section>
   );

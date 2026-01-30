@@ -1,8 +1,15 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 export function Navbar() {
   return (
-    <nav className="w-full px-6 py-4 flex items-center justify-between">
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 1.6, ease: "easeOut" }}
+      className="w-full px-6 py-4 flex items-center justify-between"
+    >
       {/* Logo and Name */}
       <div className="flex items-center gap-2">
         <svg className="w-6 h-6 text-gray-900" viewBox="0 0 16 16" fill="none">
@@ -19,6 +26,6 @@ export function Navbar() {
       >
         FAQ
       </a>
-    </nav>
+    </motion.nav>
   );
 }

@@ -103,13 +103,13 @@ export function NotchDemo() {
   return (
     <div 
       className="relative flex justify-center"
-      style={{ paddingTop: 1 }}
       onMouseEnter={() => handleHover(true)}
       onMouseLeave={() => handleHover(false)}
     >
       {/* Left Ear */}
       <motion.div
-        className="absolute top-[1px]"
+        className="absolute top-0"
+        initial={false}
         animate={{
           width: earSize,
           height: earSize,
@@ -136,7 +136,8 @@ export function NotchDemo() {
 
       {/* Right Ear */}
       <motion.div
-        className="absolute top-[1px]"
+        className="absolute top-0"
+        initial={false}
         animate={{
           width: earSize,
           height: earSize,
@@ -164,6 +165,7 @@ export function NotchDemo() {
       {/* Main Notch Body */}
       <motion.div
         className={`relative bg-black ${isExpanded ? 'overflow-visible' : 'overflow-hidden'}`}
+        initial={false}
         animate={{
           width: isExpanded ? expandedWidth : collapsedWidth,
           height: isExpanded ? expandedHeight : collapsedHeight,
