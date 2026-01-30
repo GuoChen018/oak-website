@@ -66,7 +66,7 @@ function FAQAccordionItem({ item, isOpen, onToggle }: FAQAccordionItemProps) {
         onClick={onToggle}
         className="w-full px-5 py-4 text-left flex items-center justify-between gap-4"
       >
-        <span className="text-xl font-medium text-gray-900">{item.question}</span>
+        <span className="text-lg font-medium text-gray-900">{item.question}</span>
         <motion.svg
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -87,7 +87,7 @@ function FAQAccordionItem({ item, isOpen, onToggle }: FAQAccordionItemProps) {
             transition={{ duration: 0.2 }}
           >
             <div className="px-5 pb-4">
-              <p className="text-xl text-gray-600 leading-relaxed">
+              <p className="text-base text-gray-600 leading-relaxed">
                 {item.answer}
               </p>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTimer } from "@/hooks/useTimer";
@@ -12,31 +12,42 @@ const FOCUS_PALS = [
   "sloth", "swan", "tiger", "two-hump-camel", "whale", "zebra",
 ];
 
-const TIMER_OPTIONS = [5, 10, 15, 20, 25, 30, 45, 60];
+const TIMER_OPTIONS = [5, 10, 15, 20, 25, 30, 45, 50, 60];
 
-const MUSIC_CATEGORIES: { id: MusicCategory; label: string; icon: string }[] = [
-  { id: "piano", label: "Piano", icon: "🎹" },
-  { id: "lofi", label: "LoFi", icon: "🎧" },
-  { id: "ambient", label: "Ambient", icon: "🌿" },
+const MUSIC_CATEGORIES: { id: MusicCategory; label: string }[] = [
+  { id: "piano", label: "Piano" },
+  { id: "lofi", label: "LoFi" },
+  { id: "ambient", label: "Ambient" },
 ];
 
 export function NotchDemo() {
+  const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedPal, setSelectedPal] = useState("dragon");
-  const [showPalPicker, setShowPalPicker] = useState(false);
-  const [showTimerPicker, setShowTimerPicker] = useState(false);
+  const [showFocusPalGallery, setShowFocusPalGallery] = useState(false);
+  const [showMusicSelector, setShowMusicSelector] = useState(false);
+  const [showTimerDropdown, setShowTimerDropdown] = useState(false);
   const [isMusicEnabled, setIsMusicEnabled] = useState(false);
+  const [taskText, setTaskText] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [timerMinutes, setTimerMinutes] = useState(25);
 
   const timer = useTimer(25);
   const audio = useAudio();
 
-  // Handle hydration
+  // Dimensions matching the app
+  const collapsedWidth = 220;
+  const expandedWidth = 360; // Wider for gallery (3 rows of 6)
+  const collapsedHeight = 28;
+  const expandedHeight = 150;
+  const realNotchWidth = 100;
+  const earSize = isExpanded ? 24 : 12;
+  const cornerRadius = isExpanded ? 32 : 12;
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Handle music when timer starts/stops
   useEffect(() => {
     if (timer.isRunning && isMusicEnabled && !audio.isPlaying) {
       audio.play(audio.currentCategory);
@@ -45,95 +56,163 @@ export function NotchDemo() {
     }
   }, [timer.isRunning, isMusicEnabled, audio]);
 
-  // Collapse when timer is running
-  useEffect(() => {
-    if (timer.isRunning) {
-      setIsExpanded(false);
-      setShowPalPicker(false);
-      setShowTimerPicker(false);
+  const handleHover = (hovering: boolean) => {
+    setIsHovered(hovering);
+    setIsExpanded(hovering);
+    if (!hovering) {
+      setShowFocusPalGallery(false);
+      setShowMusicSelector(false);
+      setShowTimerDropdown(false);
     }
-  }, [timer.isRunning]);
+  };
 
-  const handleStartPause = () => {
+  const handleStartStop = () => {
     if (timer.isRunning) {
       timer.pause();
     } else {
       timer.start();
     }
+    setShowTimerDropdown(false);
   };
 
   const handleTimerSelect = (minutes: number) => {
+    setTimerMinutes(minutes);
     timer.setDuration(minutes);
-    setShowTimerPicker(false);
+    setShowTimerDropdown(false);
   };
 
-  const toggleMusicCategory = (category: MusicCategory) => {
-    if (audio.currentCategory === category && isMusicEnabled) {
-      setIsMusicEnabled(false);
-      if (audio.isPlaying) {
-        audio.stop();
-      }
-    } else {
-      audio.setCategory(category);
-      setIsMusicEnabled(true);
+  const toggleMusic = () => {
+    setIsMusicEnabled(!isMusicEnabled);
+    if (timer.isRunning) {
+      audio.toggle(audio.currentCategory);
+    } else if (isMusicEnabled && audio.isPlaying) {
+      audio.stop();
     }
   };
 
   if (!mounted) {
     return (
-      <div className="flex justify-center">
-        <div className="w-[200px] h-[24px] bg-black rounded-[10px]" />
+      <div className="flex justify-center pt-1">
+        <div className="w-[220px] h-[28px] bg-black rounded-[12px]" />
       </div>
     );
   }
 
-  const collapsedWidth = 200;
-  const expandedWidth = collapsedWidth * 1.3;
+  const notchWidth = isExpanded ? expandedWidth : collapsedWidth;
 
   return (
-    <div className="flex justify-center">
+    <div 
+      className="relative flex justify-center"
+      style={{ paddingTop: 1 }}
+      onMouseEnter={() => handleHover(true)}
+      onMouseLeave={() => handleHover(false)}
+    >
+      {/* Left Ear */}
+      <motion.div
+        className="absolute top-[1px]"
+        animate={{
+          width: earSize,
+          height: earSize,
+          x: -(notchWidth / 2 + earSize),
+        }}
+        style={{
+          left: '50%',
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 35 }}
+      >
+        <svg 
+          width="100%" 
+          height="100%" 
+          viewBox="0 0 24 24" 
+          preserveAspectRatio="none"
+          className="overflow-visible"
+        >
+          <path
+            d="M24 0 L24 24 Q24 0 0 0 Z"
+            fill="black"
+          />
+        </svg>
+      </motion.div>
+
+      {/* Right Ear */}
+      <motion.div
+        className="absolute top-[1px]"
+        animate={{
+          width: earSize,
+          height: earSize,
+          x: notchWidth / 2,
+        }}
+        style={{
+          left: '50%',
+        }}
+        transition={{ type: "spring", stiffness: 400, damping: 35 }}
+      >
+        <svg 
+          width="100%" 
+          height="100%" 
+          viewBox="0 0 24 24" 
+          preserveAspectRatio="none"
+          className="overflow-visible"
+        >
+          <path
+            d="M0 0 L0 24 Q0 0 24 0 Z"
+            fill="black"
+          />
+        </svg>
+      </motion.div>
+
+      {/* Main Notch Body */}
       <motion.div
         className="relative bg-black cursor-pointer overflow-hidden"
         animate={{
           width: isExpanded ? expandedWidth : collapsedWidth,
-          height: isExpanded ? 340 : 24,
-          borderRadius: isExpanded ? 25 : 10,
+          height: isExpanded ? expandedHeight : collapsedHeight,
+          borderBottomLeftRadius: cornerRadius,
+          borderBottomRightRadius: cornerRadius,
+        }}
+        style={{
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
         }}
         transition={{
           type: "spring",
-          stiffness: 300,
-          damping: 30,
+          stiffness: 400,
+          damping: 35,
         }}
-        onMouseEnter={() => !timer.isRunning && setIsExpanded(true)}
-        onMouseLeave={() => {
-          setIsExpanded(false);
-          setShowPalPicker(false);
-          setShowTimerPicker(false);
-        }}
+        whileHover={!isExpanded ? { scale: 1.03 } : {}}
       >
         <AnimatePresence mode="wait">
           {isExpanded ? (
             <ExpandedContent
               key="expanded"
               timer={timer}
+              timerMinutes={timerMinutes}
               selectedPal={selectedPal}
               setSelectedPal={setSelectedPal}
-              showPalPicker={showPalPicker}
-              setShowPalPicker={setShowPalPicker}
-              showTimerPicker={showTimerPicker}
-              setShowTimerPicker={setShowTimerPicker}
+              showFocusPalGallery={showFocusPalGallery}
+              setShowFocusPalGallery={setShowFocusPalGallery}
+              showMusicSelector={showMusicSelector}
+              setShowMusicSelector={setShowMusicSelector}
+              showTimerDropdown={showTimerDropdown}
+              setShowTimerDropdown={setShowTimerDropdown}
               isMusicEnabled={isMusicEnabled}
+              toggleMusic={toggleMusic}
               currentCategory={audio.currentCategory}
-              toggleMusicCategory={toggleMusicCategory}
-              onStartPause={handleStartPause}
+              setCategory={audio.setCategory}
+              taskText={taskText}
+              setTaskText={setTaskText}
+              onStartStop={handleStartStop}
               onTimerSelect={handleTimerSelect}
             />
           ) : (
             <CollapsedContent
               key="collapsed"
               selectedPal={selectedPal}
-              timeDisplay={timer.formatTime(timer.timeRemaining)}
-              isRunning={timer.isRunning}
+              timeDisplay={timer.isRunning 
+                ? timer.formatTime(timer.timeRemaining) 
+                : timer.formatTime(timerMinutes * 60)}
+              realNotchWidth={realNotchWidth}
+              totalWidth={collapsedWidth}
             />
           )}
         </AnimatePresence>
@@ -145,60 +224,92 @@ export function NotchDemo() {
 interface CollapsedContentProps {
   selectedPal: string;
   timeDisplay: string;
-  isRunning: boolean;
+  realNotchWidth: number;
+  totalWidth: number;
 }
 
-function CollapsedContent({ selectedPal, timeDisplay, isRunning }: CollapsedContentProps) {
+function CollapsedContent({ selectedPal, timeDisplay, realNotchWidth, totalWidth }: CollapsedContentProps) {
+  const sideWidth = (totalWidth - realNotchWidth) / 2;
+  
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className="flex items-center justify-center h-full px-3 gap-2"
+      className="flex items-center h-full"
     >
-      <div className="relative w-4 h-4">
-        <Image
-          src={`/focus-pals/${selectedPal}.png`}
-          alt={selectedPal}
-          fill
-          className="object-contain"
-        />
+      {/* Left side - Focus Pal */}
+      <div 
+        className="flex items-center justify-start pl-3"
+        style={{ width: sideWidth }}
+      >
+        <div className="relative w-5 h-5 -mt-0.5">
+          <Image
+            src={`/focus-pals/${selectedPal}.png`}
+            alt={selectedPal}
+            fill
+            className="object-contain"
+            unoptimized
+          />
+        </div>
       </div>
-      <span className={`text-white text-xs font-medium tabular-nums ${isRunning ? "animate-pulse" : ""}`}>
-        {timeDisplay}
-      </span>
+      
+      {/* Middle - Real notch area (empty) */}
+      <div style={{ width: realNotchWidth }} />
+      
+      {/* Right side - Timer */}
+      <div 
+        className="flex items-center justify-end pr-3"
+        style={{ width: sideWidth }}
+      >
+        <span className="text-white text-xs font-medium tabular-nums">
+          {timeDisplay}
+        </span>
+      </div>
     </motion.div>
   );
 }
 
 interface ExpandedContentProps {
   timer: ReturnType<typeof useTimer>;
+  timerMinutes: number;
   selectedPal: string;
   setSelectedPal: (pal: string) => void;
-  showPalPicker: boolean;
-  setShowPalPicker: (show: boolean) => void;
-  showTimerPicker: boolean;
-  setShowTimerPicker: (show: boolean) => void;
+  showFocusPalGallery: boolean;
+  setShowFocusPalGallery: (show: boolean) => void;
+  showMusicSelector: boolean;
+  setShowMusicSelector: (show: boolean) => void;
+  showTimerDropdown: boolean;
+  setShowTimerDropdown: (show: boolean) => void;
   isMusicEnabled: boolean;
+  toggleMusic: () => void;
   currentCategory: MusicCategory;
-  toggleMusicCategory: (category: MusicCategory) => void;
-  onStartPause: () => void;
+  setCategory: (category: MusicCategory) => void;
+  taskText: string;
+  setTaskText: (text: string) => void;
+  onStartStop: () => void;
   onTimerSelect: (minutes: number) => void;
 }
 
 function ExpandedContent({
   timer,
+  timerMinutes,
   selectedPal,
   setSelectedPal,
-  showPalPicker,
-  setShowPalPicker,
-  showTimerPicker,
-  setShowTimerPicker,
+  showFocusPalGallery,
+  setShowFocusPalGallery,
+  showMusicSelector,
+  setShowMusicSelector,
+  showTimerDropdown,
+  setShowTimerDropdown,
   isMusicEnabled,
+  toggleMusic,
   currentCategory,
-  toggleMusicCategory,
-  onStartPause,
+  setCategory,
+  taskText,
+  setTaskText,
+  onStartStop,
   onTimerSelect,
 }: ExpandedContentProps) {
   return (
@@ -206,130 +317,335 @@ function ExpandedContent({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
-      className="flex flex-col items-center h-full pt-10 pb-6 px-4"
+      transition={{ duration: 0.2 }}
+      className="flex flex-col h-full px-4 py-3"
     >
-      {/* Focus Pal */}
-      <div
-        className="relative w-16 h-16 cursor-pointer hover:scale-110 transition-transform"
-        onClick={() => {
-          setShowPalPicker(!showPalPicker);
-          setShowTimerPicker(false);
-        }}
-      >
-        <Image
-          src={`/focus-pals/${selectedPal}.png`}
-          alt={selectedPal}
-          fill
-          className="object-contain"
-        />
-      </div>
-
-      {/* Pal Picker */}
-      <AnimatePresence>
-        {showPalPicker && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="grid grid-cols-6 gap-1 mt-2 max-w-[220px] overflow-hidden"
-          >
-            {FOCUS_PALS.map((pal) => (
-              <button
-                key={pal}
-                onClick={() => {
-                  setSelectedPal(pal);
-                  setShowPalPicker(false);
-                }}
-                className={`relative w-8 h-8 rounded-lg hover:bg-white/20 transition-colors ${
-                  selectedPal === pal ? "bg-white/30" : ""
-                }`}
-              >
-                <Image
-                  src={`/focus-pals/${pal}.png`}
-                  alt={pal}
-                  fill
-                  className="object-contain p-1"
-                />
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Timer Display */}
-      <div className="mt-4">
-        <button
-          onClick={() => {
-            setShowTimerPicker(!showTimerPicker);
-            setShowPalPicker(false);
-          }}
-          className="text-white text-4xl font-light tabular-nums hover:text-white/80 transition-colors"
-        >
-          {timer.formatTime(timer.timeRemaining)}
-        </button>
-      </div>
-
-      {/* Timer Picker */}
-      <AnimatePresence>
-        {showTimerPicker && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="flex flex-wrap justify-center gap-2 mt-2 max-w-[220px] overflow-hidden"
-          >
-            {TIMER_OPTIONS.map((minutes) => (
-              <button
-                key={minutes}
-                onClick={() => onTimerSelect(minutes)}
-                className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                  timer.timeRemaining === minutes * 60
-                    ? "bg-white text-black"
-                    : "bg-white/20 text-white hover:bg-white/30"
-                }`}
-              >
-                {minutes}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Music Categories */}
-      <div className="flex gap-2 mt-4">
-        {MUSIC_CATEGORIES.map((category) => (
+      {/* Navigation row - only show when in sub-view */}
+      {(showFocusPalGallery || showMusicSelector) && (
+        <div className="flex items-center h-4 mb-2">
           <button
-            key={category.id}
-            onClick={() => toggleMusicCategory(category.id)}
-            className={`px-3 py-1.5 rounded-full text-xs transition-all ${
-              isMusicEnabled && currentCategory === category.id
-                ? "bg-white text-black"
-                : "bg-white/20 text-white hover:bg-white/30"
+            onClick={() => {
+              setShowFocusPalGallery(false);
+              setShowMusicSelector(false);
+            }}
+            className="text-white/70 hover:text-white transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col justify-center">
+        {showFocusPalGallery ? (
+          <FocusPalGallery
+            selectedPal={selectedPal}
+            onSelect={(pal) => {
+              setSelectedPal(pal);
+              setShowFocusPalGallery(false);
+            }}
+          />
+        ) : showMusicSelector ? (
+          <MusicSelector
+            currentCategory={currentCategory}
+            onSelect={(category) => {
+              setCategory(category);
+              setShowMusicSelector(false);
+            }}
+          />
+        ) : (
+          <TimerInterface
+            timer={timer}
+            timerMinutes={timerMinutes}
+            showTimerDropdown={showTimerDropdown}
+            setShowTimerDropdown={setShowTimerDropdown}
+            taskText={taskText}
+            setTaskText={setTaskText}
+            onStartStop={onStartStop}
+            onTimerSelect={onTimerSelect}
+            selectedPal={selectedPal}
+            onFocusPalClick={() => setShowFocusPalGallery(true)}
+            isMusicEnabled={isMusicEnabled}
+            toggleMusic={toggleMusic}
+            onMusicClick={() => setShowMusicSelector(true)}
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+interface TimerInterfaceProps {
+  timer: ReturnType<typeof useTimer>;
+  timerMinutes: number;
+  showTimerDropdown: boolean;
+  setShowTimerDropdown: (show: boolean) => void;
+  taskText: string;
+  setTaskText: (text: string) => void;
+  onStartStop: () => void;
+  onTimerSelect: (minutes: number) => void;
+  selectedPal: string;
+  onFocusPalClick: () => void;
+  isMusicEnabled: boolean;
+  toggleMusic: () => void;
+  onMusicClick: () => void;
+}
+
+function TimerInterface({
+  timer,
+  timerMinutes,
+  showTimerDropdown,
+  setShowTimerDropdown,
+  taskText,
+  setTaskText,
+  onStartStop,
+  onTimerSelect,
+  selectedPal,
+  onFocusPalClick,
+  isMusicEnabled,
+  toggleMusic,
+  onMusicClick,
+}: TimerInterfaceProps) {
+  return (
+    <div className="flex flex-col gap-4 animate-fadeIn">
+      {/* Timer input row */}
+      <div className="relative">
+        <div className="flex items-center gap-3 px-4 py-3 bg-[#282828] rounded-[24px]">
+          {/* Timer button/display */}
+          {timer.isRunning ? (
+            <span className="text-white text-sm font-medium px-3 py-1.5 bg-[#4F4F4F] rounded-full tabular-nums whitespace-nowrap">
+              {timer.formatTime(timer.timeRemaining)}
+            </span>
+          ) : (
+            <button
+              onClick={() => setShowTimerDropdown(!showTimerDropdown)}
+              className="text-white text-sm font-medium px-3 py-1.5 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors whitespace-nowrap"
+            >
+              {timerMinutes} min
+            </button>
+          )}
+
+          {/* Task input */}
+          <input
+            type="text"
+            value={taskText}
+            onChange={(e) => setTaskText(e.target.value)}
+            placeholder="Task"
+            className="flex-1 bg-transparent text-white text-sm placeholder-[#999] outline-none min-w-0"
+          />
+
+          {/* Play/Stop button */}
+          <button
+            onClick={onStartStop}
+            className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0"
+          >
+            {timer.isRunning ? (
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <rect x="6" y="6" width="12" height="12" rx="1" />
+              </svg>
+            ) : (
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Timer dropdown */}
+        <AnimatePresence>
+          {showTimerDropdown && !timer.isRunning && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="absolute top-full left-0 mt-2 bg-[#282828] rounded-2xl p-2 z-50 shadow-xl"
+            >
+              <div className="grid grid-cols-3 gap-1">
+                {TIMER_OPTIONS.map((minutes) => (
+                  <button
+                    key={minutes}
+                    onClick={() => onTimerSelect(minutes)}
+                    className={`px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
+                      timerMinutes === minutes
+                        ? "bg-white text-black"
+                        : "text-white hover:bg-white/20"
+                    }`}
+                  >
+                    {minutes}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Bottom row: Focus Pal + Music */}
+      <div className="flex gap-3">
+        {/* Focus Pal button */}
+        <button
+          onClick={onFocusPalClick}
+          className="flex-1 flex items-center justify-between px-4 py-2.5 bg-white/15 rounded-full hover:bg-white/20 transition-colors"
+        >
+          <span className="text-white text-sm font-medium">Focus Pal</span>
+          <div className="relative w-5 h-5">
+            <Image
+              src={`/focus-pals/${selectedPal}.png`}
+              alt={selectedPal}
+              fill
+              className="object-contain"
+              unoptimized
+            />
+          </div>
+        </button>
+
+        {/* Music button */}
+        <div
+          onClick={onMusicClick}
+          className="flex-1 flex items-center justify-between px-4 py-2.5 bg-white/15 rounded-full hover:bg-white/20 transition-colors cursor-pointer"
+        >
+          <span className="text-white text-sm font-medium">Music</span>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleMusic();
+            }}
+            className="text-white text-xs font-semibold px-2 py-0.5 bg-white/30 rounded-md hover:bg-white/40 transition-colors"
+          >
+            {isMusicEnabled ? "ON" : "OFF"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface FocusPalGalleryProps {
+  selectedPal: string;
+  onSelect: (pal: string) => void;
+}
+
+const PAL_DISPLAY_NAMES: Record<string, string> = {
+  "baby-chick": "Baby Chick",
+  "cat": "Cat",
+  "cow": "Cow",
+  "crocodile": "Crocodile",
+  "deer": "Deer",
+  "dog": "Dog",
+  "dove": "Dove",
+  "dragon": "Dragon",
+  "fish": "Fish",
+  "hedgehog": "Hedgehog",
+  "hippo": "Hippo",
+  "sauropod": "Sauropod",
+  "sloth": "Sloth",
+  "swan": "Swan",
+  "tiger": "Tiger",
+  "two-hump-camel": "Camel",
+  "whale": "Whale",
+  "zebra": "Zebra",
+};
+
+function FocusPalGallery({ selectedPal, onSelect }: FocusPalGalleryProps) {
+  const [hoveredPal, setHoveredPal] = useState<string | null>(null);
+  const previewPal = hoveredPal || selectedPal;
+
+  return (
+    <div className="flex gap-3 animate-fadeIn">
+      {/* Grid of creatures - 6 columns, 3 rows */}
+      <div className="grid grid-cols-6 gap-1.5">
+        {FOCUS_PALS.map((pal) => (
+          <button
+            key={pal}
+            onClick={() => onSelect(pal)}
+            onMouseEnter={() => setHoveredPal(pal)}
+            onMouseLeave={() => setHoveredPal(null)}
+            className={`relative w-8 h-8 rounded-lg transition-all ${
+              selectedPal === pal
+                ? "bg-white/40 scale-110"
+                : "hover:bg-white/20"
             }`}
           >
-            <span className="mr-1">{category.icon}</span>
-            {category.label}
+            <Image
+              src={`/focus-pals/${pal}.png`}
+              alt={pal}
+              fill
+              className="object-contain p-0.5"
+              unoptimized
+            />
           </button>
         ))}
       </div>
 
-      {/* Start/Pause Button */}
-      <button
-        onClick={onStartPause}
-        className="mt-6 w-12 h-12 rounded-full bg-white flex items-center justify-center hover:bg-white/90 transition-colors"
-      >
-        {timer.isRunning ? (
-          <svg className="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
-            <rect x="6" y="4" width="4" height="16" rx="1" />
-            <rect x="14" y="4" width="4" height="16" rx="1" />
-          </svg>
-        ) : (
-          <svg className="w-5 h-5 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        )}
-      </button>
-    </motion.div>
+      {/* Preview panel */}
+      <div className="flex-1 flex flex-col items-center justify-center bg-white/10 rounded-2xl p-2">
+        <div className="relative w-12 h-12">
+          <Image
+            src={`/focus-pals/${previewPal}.png`}
+            alt={previewPal}
+            fill
+            className="object-contain"
+            unoptimized
+          />
+        </div>
+        <span className="text-white text-xs font-medium mt-1">
+          {PAL_DISPLAY_NAMES[previewPal] || previewPal}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+interface MusicSelectorProps {
+  currentCategory: MusicCategory;
+  onSelect: (category: MusicCategory) => void;
+}
+
+const MUSIC_ICONS: Record<MusicCategory, React.ReactNode> = {
+  piano: (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 15.5h-2V13H8.5v5.5H7V5h1.5v6H10V5h2v6h1.5V5H15v5.5h-1.5V13H12v5.5zm5-5.5h-1.5V5H17v8z"/>
+    </svg>
+  ),
+  lofi: (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+  ),
+  ambient: (
+    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+    </svg>
+  ),
+};
+
+function MusicSelector({ currentCategory, onSelect }: MusicSelectorProps) {
+  return (
+    <div className="flex flex-col gap-3 animate-fadeIn">
+      {/* Header */}
+      <div className="flex items-center">
+        <span className="text-white text-sm font-semibold">Music</span>
+      </div>
+
+      {/* Category cards in a row */}
+      <div className="flex gap-2">
+        {MUSIC_CATEGORIES.map((category) => (
+          <button
+            key={category.id}
+            onClick={() => onSelect(category.id)}
+            className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3 rounded-2xl transition-all ${
+              currentCategory === category.id
+                ? "bg-white/30 ring-1 ring-white/50"
+                : "bg-white/10 hover:bg-white/20"
+            }`}
+          >
+            <span className="text-white">{MUSIC_ICONS[category.id]}</span>
+            <span className="text-white text-xs font-medium">{category.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }

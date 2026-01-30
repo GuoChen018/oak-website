@@ -19,7 +19,7 @@ export function Hero() {
             <path d="M61.6892 1C61.4383 1 57.2497 1 50.325 1.0893C45.9041 1.14632 42.5904 2.14643 39.0941 3.54893C35.4294 5.01897 32.1011 7.57502 28.1048 11.135C25.6492 13.3225 22.76 16.7482 19.9831 20.2954C14.7404 27.5264 11.4958 32.8731 10.1858 36.7937C9.57972 39.1628 9.09302 42.3026 8.53027 46.3871" stroke="#3E3838" strokeWidth="3.5" strokeLinecap="round"/>
             <path d="M1 45.7793C1.17745 46.3896 2.93193 49.8343 4.76538 52.4118C5.47163 53.4046 6.50694 53.8571 7.45505 53.9217C8.41472 53.6869 11.2928 51.7771 15.1777 48.9359C16.6782 47.8057 17.2227 47.308 18.0342 46.6761" stroke="#3E3838" strokeWidth="3.5" strokeLinecap="round"/>
           </svg>
-          <span className="text-gray-800 text-xl font-handdrawn -mt-1">
+          <span className="text-gray-800 text-lg font-handdrawn -mt-1">
             Try it out!
           </span>
         </div>
@@ -28,9 +28,9 @@ export function Hero() {
       {/* Desktop Frame */}
       <div className="relative max-w-6xl mx-auto">
         {/* Wallpaper with menu bar overlay */}
-        <div className="relative rounded-2xl shadow-2xl overflow-hidden">
+        <div className="relative rounded-xl shadow-2xl overflow-hidden">
           {/* Wallpaper Image */}
-          <div className="relative w-full aspect-[16/7]">
+          <div className="relative w-full aspect-[16/5.5]">
             <Image
               src="/wallpaper.png"
               alt="Mountain wallpaper"
@@ -51,10 +51,10 @@ export function Hero() {
 
       {/* Tagline and CTA */}
       <div className="text-center mt-12">
-        <h1 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-3">
+        <h1 className="text-3xl font-semibold text-gray-900 mb-3">
           Focus mode, made delightful
         </h1>
-        <p className="text-gray-600 text-base md:text-lg mb-6 max-w-md mx-auto">
+        <p className="text-gray-600 text-base mb-6 max-w-md mx-auto">
           Transform your Mac&apos;s notch into a focus space with calming music and a companion by your side.
         </p>
         <a
