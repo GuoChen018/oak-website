@@ -20,21 +20,21 @@ export default function Home() {
       <footer className="py-8 text-center text-sm text-gray-500">
         <p>
           Made by{" "}
-          <a href="#" className="text-gray-700 hover:text-gray-900 underline">
+          <a href="https://x.com/guo_hq" target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-gray-900 underline">
             Guo
           </a>
           . Photo by{" "}
           <a 
-            href="https://unsplash.com/@conti_photos" 
+            href="https://unsplash.com/@mankindman?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-gray-700 hover:text-gray-900 underline"
           >
-            Fabrizio Conti
+            Max Man
           </a>
           {" "}on{" "}
           <a 
-            href="https://unsplash.com" 
+            href="https://unsplash.com/photos/jagged-mountain-peaks-against-a-hazy-sky-6ABO0O612XQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-gray-700 hover:text-gray-900 underline"

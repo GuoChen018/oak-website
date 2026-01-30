@@ -20,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={deliciousHandrawn.variable}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration = "manual"` }} />
+      </head>
       <body className="antialiased">
         {children}
       </body>

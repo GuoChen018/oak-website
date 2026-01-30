@@ -3,19 +3,21 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { ReactNode } from "react";
+
 interface FAQItem {
   question: string;
-  answer: string;
+  answer: ReactNode;
 }
 
 const FAQ_ITEMS: FAQItem[] = [
   {
     question: "Can I try Oak for free?",
-    answer: "Yes! You can download Oak and try it out for 48 hours. After that you would need to purchase a license to continue using.",
+    answer: "Yes! You can download Oak and try it out for 72 hours. After that you would need to purchase a license to continue using.",
   },
   {
     question: "Do I have to pay for updates?",
-    answer: "No. Oak is a one-time $9.99 purchase with all future updates included.",
+    answer: "No. Oak is a one-time $4.99 purchase with all future updates included.",
   },
   {
     question: "May I request a refund?",
@@ -26,8 +28,12 @@ const FAQ_ITEMS: FAQItem[] = [
     answer: "Yes! I have lots of ideas on how to improve Oak, and I can't wait to build them out.",
   },
   {
+    question: "Can I hide the animal & timer?",
+    answer: "Yes. You can hide both or either in Settings.",
+  },
+  {
     question: "How can I give feedback or report a bug?",
-    answer: "You can share any feedback or bug via this form.",
+    answer: <>You can share any feedback or bug via <a href="https://tally.so/r/eqRqBl" target="_blank" rel="noopener noreferrer" className="underline">this form</a>.</>,
   },
   {
     question: "Does this app collect any data?",
