@@ -22,7 +22,7 @@ export function Navbar() {
       {/* FAQ Link */}
       <a 
         href="#faq" 
-        className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+        className="text-base font-medium text-gray-600 hover:text-gray-900 transition-colors"
       >
         FAQ
       </a>
