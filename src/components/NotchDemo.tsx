@@ -254,6 +254,13 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Hidden preload images for focus pals */}
+      <div className="hidden">
+        {FOCUS_PALS.map((pal) => (
+          <img key={pal} src={`/focus-pals/${pal}.png`} alt="" />
+        ))}
+      </div>
     </div>
   );
 }
@@ -383,7 +390,7 @@ function ExpandedContent({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             >
               <FocusPalGallery
                 selectedPal={selectedPal}
@@ -399,7 +406,7 @@ function ExpandedContent({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             >
               <MusicSelector
                 currentCategory={currentCategory}
@@ -415,7 +422,7 @@ function ExpandedContent({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             >
               <TimerInterface
                 timer={timer}
@@ -472,7 +479,7 @@ function TimerInterface({
   onMusicClick,
 }: TimerInterfaceProps) {
   return (
-    <div className="flex flex-col gap-3 mt-8">
+    <div className="flex flex-col gap-3 mt-10">
       {/* Timer input row */}
       <div className="relative">
         <div className="flex items-center gap-3 px-4 py-3 bg-[#282828] rounded-[24px]">
