@@ -10,6 +10,22 @@ interface FAQItem {
 
 const FAQ_ITEMS: FAQItem[] = [
   {
+    question: "Can I try Oak for free?",
+    answer: "Yes! You can download Oak and try it out for 48 hours. After that you would need to purchase a license to continue using.",
+  },
+  {
+    question: "Do I have to pay for updates?",
+    answer: "No. Oak is a one-time $9.99 purchase with all future updates included.",
+  },
+  {
+    question: "May I request a refund?",
+    answer: "Yes. You can request a refund within 14 days of your original purchase. No reason required.",
+  },
+  {
+    question: "Will Oak improve?",
+    answer: "Yes! I have lots of ideas on how to improve Oak, and I can't wait to build them out.",
+  },
+  {
     question: "How can I give feedback or report a bug?",
     answer: "You can share any feedback or bug via this form.",
   },
@@ -20,10 +36,6 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     question: "What Macs are supported?",
     answer: "Oak requires macOS 12.0 or later. It works best on MacBooks with a notch, but also works beautifully on external displays.",
-  },
-  {
-    question: "Can I add my own music?",
-    answer: "Not currently, but this is on our roadmap! For now, enjoy our curated Piano, LoFi, and Ambient tracks.",
   },
 ];
 
@@ -37,7 +49,7 @@ export function FAQ() {
   return (
     <section className="w-full max-w-xl mx-auto px-4">
       <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900">
-        Common Questions
+        FAQ
       </h2>
       <div className="flex flex-col gap-2">
         {FAQ_ITEMS.map((item, index) => (
@@ -64,7 +76,7 @@ function FAQAccordionItem({ item, isOpen, onToggle }: FAQAccordionItemProps) {
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
       <button
         onClick={onToggle}
-        className="w-full px-5 py-4 text-left flex items-center justify-between gap-4"
+        className="w-full px-5 py-4 text-left flex items-center justify-between gap-4 cursor-pointer"
       >
         <span className="text-lg font-medium text-gray-900">{item.question}</span>
         <motion.svg
