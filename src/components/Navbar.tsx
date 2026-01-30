@@ -7,7 +7,7 @@ export function Navbar() {
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 2.0, ease: "easeOut" }}
+      transition={{ duration: 0.6, delay: 3.0, ease: "easeOut" }}
       className="w-full px-6 py-4 flex items-center justify-between"
     >
       {/* Logo and Name */}

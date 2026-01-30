@@ -43,13 +43,19 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
   const collapsedWidth = 220;
   const expandedWidth = 360; // Wider for gallery (3 rows of 6)
   const collapsedHeight = 28;
-  const expandedHeight = 170;
+  const expandedHeight = 185;
   const realNotchWidth = 100;
   const earSize = isExpanded ? 24 : 12;
   const cornerRadius = isExpanded ? 32 : 12;
 
   useEffect(() => {
     setMounted(true);
+    
+    // Preload focus pal images
+    FOCUS_PALS.forEach((pal) => {
+      const img = new window.Image();
+      img.src = `/focus-pals/${pal}.png`;
+    });
   }, []);
 
   useEffect(() => {
@@ -466,7 +472,7 @@ function TimerInterface({
   onMusicClick,
 }: TimerInterfaceProps) {
   return (
-    <div className="flex flex-col gap-3 mt-6">
+    <div className="flex flex-col gap-3 mt-8">
       {/* Timer input row */}
       <div className="relative">
         <div className="flex items-center gap-3 px-4 py-3 bg-[#282828] rounded-[24px]">
@@ -675,7 +681,7 @@ const MUSIC_ICON_PATHS: Record<MusicCategory, string> = {
 
 function MusicSelector({ currentCategory, onSelect }: MusicSelectorProps) {
   return (
-    <div className="flex flex-col gap-2 mt-4">
+    <div className="flex flex-col gap-2">
       {/* Header */}
       <div className="flex items-center">
         <span className="text-white text-sm font-semibold">Music</span>
@@ -687,7 +693,7 @@ function MusicSelector({ currentCategory, onSelect }: MusicSelectorProps) {
           <button
             key={category.id}
             onClick={() => onSelect(category.id)}
-            className={`flex-1 flex flex-col items-center justify-center gap-1 py-2.5 rounded-2xl transition-all cursor-pointer ${
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-6 rounded-2xl transition-all cursor-pointer ${
               currentCategory === category.id
                 ? "bg-white/30 ring-1 ring-white/50"
                 : "bg-white/10 hover:bg-white/20"
