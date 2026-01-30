@@ -512,12 +512,12 @@ function TimerInterface({
             className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0 cursor-pointer"
           >
             {timer.isRunning ? (
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <rect x="6" y="6" width="12" height="12" rx="1" />
+              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <rect x="6" y="6" width="12" height="12" rx="3" />
               </svg>
             ) : (
-              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
+              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z" />
               </svg>
             )}
           </button>
@@ -537,7 +537,7 @@ function TimerInterface({
                   <button
                     key={minutes}
                     onClick={() => onTimerSelect(minutes)}
-                    className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                    className={`px-1.5 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                       timerMinutes === minutes
                         ? "bg-white text-black"
                         : "text-white hover:bg-white/20"
@@ -638,7 +638,7 @@ function FocusPalGallery({ selectedPal, onSelect }: FocusPalGalleryProps) {
             onClick={() => onSelect(pal)}
             onMouseEnter={() => setHoveredPal(pal)}
             onMouseLeave={() => setHoveredPal(null)}
-            className={`relative w-7 h-7 rounded-lg transition-all cursor-pointer ${
+            className={`relative w-7 h-7 rounded-lg transition-all duration-300 ease-out cursor-pointer ${
               selectedPal === pal
                 ? "bg-white/40 scale-110"
                 : "hover:bg-white/20"
