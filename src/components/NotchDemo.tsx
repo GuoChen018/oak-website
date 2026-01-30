@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTimer } from "@/hooks/useTimer";
@@ -39,7 +39,7 @@ export function NotchDemo() {
   const collapsedWidth = 220;
   const expandedWidth = 360; // Wider for gallery (3 rows of 6)
   const collapsedHeight = 28;
-  const expandedHeight = 150;
+  const expandedHeight = 170;
   const realNotchWidth = 100;
   const earSize = isExpanded ? 24 : 12;
   const cornerRadius = isExpanded ? 32 : 12;
@@ -163,7 +163,7 @@ export function NotchDemo() {
 
       {/* Main Notch Body */}
       <motion.div
-        className="relative bg-black cursor-pointer overflow-hidden"
+        className={`relative bg-black ${isExpanded ? 'overflow-visible' : 'overflow-hidden'}`}
         animate={{
           width: isExpanded ? expandedWidth : collapsedWidth,
           height: isExpanded ? expandedHeight : collapsedHeight,
@@ -328,7 +328,7 @@ function ExpandedContent({
               setShowFocusPalGallery(false);
               setShowMusicSelector(false);
             }}
-            className="text-white/70 hover:text-white transition-colors"
+            className="text-white/70 hover:text-white transition-colors cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -339,39 +339,65 @@ function ExpandedContent({
 
       {/* Main content */}
       <div className="flex-1 flex flex-col justify-center">
-        {showFocusPalGallery ? (
-          <FocusPalGallery
-            selectedPal={selectedPal}
-            onSelect={(pal) => {
-              setSelectedPal(pal);
-              setShowFocusPalGallery(false);
-            }}
-          />
-        ) : showMusicSelector ? (
-          <MusicSelector
-            currentCategory={currentCategory}
-            onSelect={(category) => {
-              setCategory(category);
-              setShowMusicSelector(false);
-            }}
-          />
-        ) : (
-          <TimerInterface
-            timer={timer}
-            timerMinutes={timerMinutes}
-            showTimerDropdown={showTimerDropdown}
-            setShowTimerDropdown={setShowTimerDropdown}
-            taskText={taskText}
-            setTaskText={setTaskText}
-            onStartStop={onStartStop}
-            onTimerSelect={onTimerSelect}
-            selectedPal={selectedPal}
-            onFocusPalClick={() => setShowFocusPalGallery(true)}
-            isMusicEnabled={isMusicEnabled}
-            toggleMusic={toggleMusic}
-            onMusicClick={() => setShowMusicSelector(true)}
-          />
-        )}
+        <AnimatePresence mode="popLayout">
+          {showFocusPalGallery ? (
+            <motion.div
+              key="gallery"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              <FocusPalGallery
+                selectedPal={selectedPal}
+                onSelect={(pal) => {
+                  setSelectedPal(pal);
+                  setShowFocusPalGallery(false);
+                }}
+              />
+            </motion.div>
+          ) : showMusicSelector ? (
+            <motion.div
+              key="music"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              <MusicSelector
+                currentCategory={currentCategory}
+                onSelect={(category) => {
+                  setCategory(category);
+                  setShowMusicSelector(false);
+                }}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="timer"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+            >
+              <TimerInterface
+                timer={timer}
+                timerMinutes={timerMinutes}
+                showTimerDropdown={showTimerDropdown}
+                setShowTimerDropdown={setShowTimerDropdown}
+                taskText={taskText}
+                setTaskText={setTaskText}
+                onStartStop={onStartStop}
+                onTimerSelect={onTimerSelect}
+                selectedPal={selectedPal}
+                onFocusPalClick={() => setShowFocusPalGallery(true)}
+                isMusicEnabled={isMusicEnabled}
+                toggleMusic={toggleMusic}
+                onMusicClick={() => setShowMusicSelector(true)}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   );
@@ -409,7 +435,7 @@ function TimerInterface({
   onMusicClick,
 }: TimerInterfaceProps) {
   return (
-    <div className="flex flex-col gap-4 animate-fadeIn">
+    <div className="flex flex-col gap-3 mt-6">
       {/* Timer input row */}
       <div className="relative">
         <div className="flex items-center gap-3 px-4 py-3 bg-[#282828] rounded-[24px]">
@@ -421,7 +447,7 @@ function TimerInterface({
           ) : (
             <button
               onClick={() => setShowTimerDropdown(!showTimerDropdown)}
-              className="text-white text-sm font-medium px-3 py-1.5 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors whitespace-nowrap"
+              className="text-white text-sm font-medium px-3 py-1.5 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors whitespace-nowrap cursor-pointer"
             >
               {timerMinutes} min
             </button>
@@ -439,7 +465,7 @@ function TimerInterface({
           {/* Play/Stop button */}
           <button
             onClick={onStartStop}
-            className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0"
+            className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0 cursor-pointer"
           >
             {timer.isRunning ? (
               <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -457,17 +483,17 @@ function TimerInterface({
         <AnimatePresence>
           {showTimerDropdown && !timer.isRunning && (
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="absolute top-full left-0 mt-2 bg-[#282828] rounded-2xl p-2 z-50 shadow-xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute top-full left-0 mt-1 bg-[#282828] rounded-xl p-1.5 z-50 shadow-xl"
             >
-              <div className="grid grid-cols-3 gap-1">
+              <div className="grid grid-cols-3 gap-0.5">
                 {TIMER_OPTIONS.map((minutes) => (
                   <button
                     key={minutes}
                     onClick={() => onTimerSelect(minutes)}
-                    className={`px-3 py-2 rounded-xl text-xs font-medium transition-colors ${
+                    className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                       timerMinutes === minutes
                         ? "bg-white text-black"
                         : "text-white hover:bg-white/20"
@@ -484,40 +510,40 @@ function TimerInterface({
 
       {/* Bottom row: Focus Pal + Music */}
       <div className="flex gap-3">
-        {/* Focus Pal button */}
-        <button
-          onClick={onFocusPalClick}
-          className="flex-1 flex items-center justify-between px-4 py-2.5 bg-white/15 rounded-full hover:bg-white/20 transition-colors"
-        >
-          <span className="text-white text-sm font-medium">Focus Pal</span>
-          <div className="relative w-5 h-5">
-            <Image
-              src={`/focus-pals/${selectedPal}.png`}
-              alt={selectedPal}
-              fill
-              className="object-contain"
-              unoptimized
-            />
-          </div>
-        </button>
-
-        {/* Music button */}
-        <div
-          onClick={onMusicClick}
-          className="flex-1 flex items-center justify-between px-4 py-2.5 bg-white/15 rounded-full hover:bg-white/20 transition-colors cursor-pointer"
-        >
-          <span className="text-white text-sm font-medium">Music</span>
+          {/* Focus Pal button */}
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleMusic();
-            }}
-            className="text-white text-xs font-semibold px-2 py-0.5 bg-white/30 rounded-md hover:bg-white/40 transition-colors"
+            onClick={onFocusPalClick}
+            className="flex-1 flex items-center justify-between px-4 py-2.5 bg-white/15 rounded-full hover:bg-white/20 transition-colors cursor-pointer"
           >
-            {isMusicEnabled ? "ON" : "OFF"}
+            <span className="text-white text-sm font-medium">Focus Pal</span>
+            <div className="relative w-5 h-5">
+              <Image
+                src={`/focus-pals/${selectedPal}.png`}
+                alt={selectedPal}
+                fill
+                className="object-contain"
+                unoptimized
+              />
+            </div>
           </button>
+
+          {/* Music button */}
+          <div
+            onClick={onMusicClick}
+            className="flex-1 flex items-center justify-between px-4 py-2.5 bg-white/15 rounded-full hover:bg-white/20 transition-colors cursor-pointer"
+          >
+            <span className="text-white text-sm font-medium">Music</span>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMusic();
+              }}
+              className="text-white text-xs font-semibold px-2 py-0.5 bg-white/30 rounded-full hover:bg-white/40 transition-colors cursor-pointer"
+            >
+              {isMusicEnabled ? "ON" : "OFF"}
+            </button>
+          </div>
         </div>
-      </div>
     </div>
   );
 }
@@ -553,16 +579,22 @@ function FocusPalGallery({ selectedPal, onSelect }: FocusPalGalleryProps) {
   const previewPal = hoveredPal || selectedPal;
 
   return (
-    <div className="flex gap-3 animate-fadeIn">
-      {/* Grid of creatures - 6 columns, 3 rows */}
-      <div className="grid grid-cols-6 gap-1.5">
+    <div className="flex flex-col gap-2">
+      {/* Header */}
+      <div className="flex items-center">
+        <span className="text-white text-sm font-semibold">Focus Pal</span>
+      </div>
+
+      <div className="flex gap-2">
+        {/* Grid of creatures - 6 columns, 3 rows */}
+        <div className="grid grid-cols-6 gap-1">
         {FOCUS_PALS.map((pal) => (
           <button
             key={pal}
             onClick={() => onSelect(pal)}
             onMouseEnter={() => setHoveredPal(pal)}
             onMouseLeave={() => setHoveredPal(null)}
-            className={`relative w-8 h-8 rounded-lg transition-all ${
+            className={`relative w-7 h-7 rounded-lg transition-all cursor-pointer ${
               selectedPal === pal
                 ? "bg-white/40 scale-110"
                 : "hover:bg-white/20"
@@ -580,8 +612,8 @@ function FocusPalGallery({ selectedPal, onSelect }: FocusPalGalleryProps) {
       </div>
 
       {/* Preview panel */}
-      <div className="flex-1 flex flex-col items-center justify-center bg-white/10 rounded-2xl p-2">
-        <div className="relative w-12 h-12">
+      <div className="flex-1 flex flex-col items-center justify-center bg-white/10 rounded-2xl p-3">
+        <div className="relative w-14 h-14">
           <Image
             src={`/focus-pals/${previewPal}.png`}
             alt={previewPal}
@@ -594,6 +626,7 @@ function FocusPalGallery({ selectedPal, onSelect }: FocusPalGalleryProps) {
           {PAL_DISPLAY_NAMES[previewPal] || previewPal}
         </span>
       </div>
+      </div>
     </div>
   );
 }
@@ -603,27 +636,15 @@ interface MusicSelectorProps {
   onSelect: (category: MusicCategory) => void;
 }
 
-const MUSIC_ICONS: Record<MusicCategory, React.ReactNode> = {
-  piano: (
-    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 15.5h-2V13H8.5v5.5H7V5h1.5v6H10V5h2v6h1.5V5H15v5.5h-1.5V13H12v5.5zm5-5.5h-1.5V5H17v8z"/>
-    </svg>
-  ),
-  lofi: (
-    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-    </svg>
-  ),
-  ambient: (
-    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-    </svg>
-  ),
+const MUSIC_ICON_PATHS: Record<MusicCategory, string> = {
+  piano: "/piano-icon.png",
+  lofi: "/lofi-icon.png",
+  ambient: "/ambient-icon.png",
 };
 
 function MusicSelector({ currentCategory, onSelect }: MusicSelectorProps) {
   return (
-    <div className="flex flex-col gap-3 animate-fadeIn">
+    <div className="flex flex-col gap-2 mt-4">
       {/* Header */}
       <div className="flex items-center">
         <span className="text-white text-sm font-semibold">Music</span>
@@ -635,13 +656,21 @@ function MusicSelector({ currentCategory, onSelect }: MusicSelectorProps) {
           <button
             key={category.id}
             onClick={() => onSelect(category.id)}
-            className={`flex-1 flex flex-col items-center justify-center gap-1.5 py-3 rounded-2xl transition-all ${
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-2.5 rounded-2xl transition-all cursor-pointer ${
               currentCategory === category.id
                 ? "bg-white/30 ring-1 ring-white/50"
                 : "bg-white/10 hover:bg-white/20"
             }`}
           >
-            <span className="text-white">{MUSIC_ICONS[category.id]}</span>
+            <div className="relative w-6 h-6">
+              <Image
+                src={MUSIC_ICON_PATHS[category.id]}
+                alt={category.label}
+                fill
+                className="object-contain"
+                unoptimized
+              />
+            </div>
             <span className="text-white text-xs font-medium">{category.label}</span>
           </button>
         ))}

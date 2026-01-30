@@ -51,15 +51,15 @@ export function Hero() {
 
       {/* Tagline and CTA */}
       <div className="text-center mt-12">
-        <h1 className="text-3xl font-semibold text-gray-900 mb-3">
-          Focus mode, made delightful
+        <h1 className="text-6xl font-semibold text-gray-900 mb-3">
+          Focus mode. Made delightful
         </h1>
-        <p className="text-gray-600 text-base mb-6 max-w-md mx-auto">
+        <p className="text-gray-600 text-xl mb-6 max-w-md mx-auto">
           Transform your Mac&apos;s notch into a focus space with calming music and a companion by your side.
         </p>
         <a
           href="#waitlist"
-          className="inline-flex items-center justify-center px-6 py-3 bg-black text-white text-sm font-medium rounded-full hover:bg-gray-800 transition-colors"
+          className="inline-flex items-center justify-center px-6 py-3 bg-black text-white text-lg font-medium rounded-full hover:bg-gray-800 transition-colors"
         >
           Join Waitlist
         </a>
