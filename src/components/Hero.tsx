@@ -1,11 +1,25 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MacMenuBar } from "./MacMenuBar";
 import { NotchDemo } from "./NotchDemo";
 
 export function Hero() {
+  const [showToast, setShowToast] = useState(false);
+
+  // Auto-hide toast after 3 seconds
+  useEffect(() => {
+    if (!showToast) return;
+    
+    const timeout = setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [showToast]);
+
   return (
     <section className="w-full px-4 pt-4 pb-12">
       {/* "Try it out!" annotation */}
@@ -72,9 +86,26 @@ export function Hero() {
           {/* Menu Bar Overlay - positioned on top of wallpaper */}
           <div className="absolute inset-x-0 top-0 z-10">
             <MacMenuBar>
-              <NotchDemo />
+              <NotchDemo onShowToast={() => setShowToast(true)} />
             </MacMenuBar>
           </div>
+
+          {/* Toast */}
+          <AnimatePresence>
+            {showToast && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20"
+              >
+                <div className="bg-black/80 backdrop-blur-sm text-white px-4 py-2.5 rounded-full text-sm font-medium shadow-lg">
+                  If you like this, consider downloading! 🌿
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
 

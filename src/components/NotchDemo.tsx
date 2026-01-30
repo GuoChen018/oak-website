@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTimer } from "@/hooks/useTimer";
@@ -20,7 +20,11 @@ const MUSIC_CATEGORIES: { id: MusicCategory; label: string }[] = [
   { id: "ambient", label: "Ambient" },
 ];
 
-export function NotchDemo() {
+interface NotchDemoProps {
+  onShowToast?: () => void;
+}
+
+export function NotchDemo({ onShowToast }: NotchDemoProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedPal, setSelectedPal] = useState("dragon");
@@ -55,6 +59,31 @@ export function NotchDemo() {
       audio.stop();
     }
   }, [timer.isRunning, isMusicEnabled, audio]);
+
+  // Auto-reset timer after 5 seconds and show toast
+  const timerStartRef = useRef<number | null>(null);
+  
+  useEffect(() => {
+    if (timer.isRunning && timerStartRef.current === null) {
+      timerStartRef.current = Date.now();
+    }
+    
+    if (!timer.isRunning) {
+      timerStartRef.current = null;
+      return;
+    }
+
+    const checkTime = setInterval(() => {
+      if (timerStartRef.current && Date.now() - timerStartRef.current >= 10000) {
+        timer.pause();
+        timer.reset();
+        timerStartRef.current = null;
+        onShowToast?.();
+      }
+    }, 100);
+
+    return () => clearInterval(checkTime);
+  }, [timer.isRunning]);
 
   const handleHover = (hovering: boolean) => {
     setIsHovered(hovering);

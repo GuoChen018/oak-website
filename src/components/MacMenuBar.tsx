@@ -10,7 +10,7 @@ export function MacMenuBar({ children }: MacMenuBarProps) {
   return (
     <div className="relative w-full h-6">
       {/* Menu Bar Background */}
-      <div className="absolute inset-x-0 top-0 h-6 bg-black/10 flex items-center justify-between px-4 text-[#FEFEFE] text-[11px]" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif' }}>
+      <div className="absolute inset-x-0 top-0 h-6 bg-black/10 flex items-center justify-between pl-2 pr-2 text-[#FEFEFE] text-[11px]" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif' }}>
         {/* Left side - Apple logo only */}
         <div className="flex items-center">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
