@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Delicious_Handrawn } from "next/font/google";
+import { Delicious_Handrawn, Inter } from "next/font/google";
 import "./globals.css";
 
 const deliciousHandrawn = Delicious_Handrawn({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-handdrawn",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -19,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={deliciousHandrawn.variable}>
+    <html lang="en" className={`${deliciousHandrawn.variable} ${inter.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration = "manual"` }} />
       </head>

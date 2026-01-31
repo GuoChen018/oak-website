@@ -24,7 +24,7 @@ export function Hero() {
     <section className="w-full px-4 pt-4 pb-12">
       {/* "Try it out!" annotation */}
       <div className="flex justify-center mb-2">
-        <div className="flex items-start gap-1 ml-32">
+        <div className="flex items-start gap-1 ml-28">
           {/* Hand-drawn arrow */}
           <svg 
             className="w-10 h-9 mt-3" 
@@ -56,7 +56,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 2.5 }}
-            className="text-gray-800 text-lg font-handdrawn -mt-1"
+            className="text-gray-800 text-xl font-handdrawn -mt-1"
           >
             Try it out!
           </motion.span>
