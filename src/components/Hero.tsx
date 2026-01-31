@@ -103,8 +103,8 @@ export function Hero() {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20"
               >
-                <div className="bg-black/80 backdrop-blur-sm text-white px-4 py-2.5 rounded-full text-sm font-medium shadow-lg">
-                  If you like this, consider downloading!
+                <div className="bg-black/80 backdrop-blur-sm text-white px-4 py-2.5 rounded-full text-sm font-medium shadow-lg whitespace-nowrap">
+                  Like this? Consider downloading!
                 </div>
               </motion.div>
             )}
@@ -118,7 +118,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.6, ease: "easeOut" }}
-          className="text-5xl md:text-6xl font-medium text-gray-900 mb-4 leading-tight"
+          className="text-4xl md:text-6xl font-medium text-gray-900 mb-4 leading-tight"
         >
           Focus mode. Made delightful
         </motion.h1>
