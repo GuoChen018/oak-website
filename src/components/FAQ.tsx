@@ -24,6 +24,10 @@ const FAQ_ITEMS: FAQItem[] = [
     answer: "You can use your license on up to 3 devices. You can also deactivate a specific device at any time through settings.",
   },
   {
+    question: "What if I lost my license key?",
+    answer: <>Don&apos;t worry. You can fill out <a href="https://tally.so/r/eqRqBl" target="_blank" rel="noopener noreferrer" className="underline decoration-gray-400 underline-offset-2">this form</a>, and we&apos;ll get back to you as soon as possible.</>,
+  },
+  {
     question: "May I request a refund?",
     answer: "Yes. You can request a refund within 14 days of your original purchase. No reason required.",
   },
@@ -87,7 +91,7 @@ interface FAQAccordionItemProps {
 
 function FAQAccordionItem({ item, isOpen, onToggle }: FAQAccordionItemProps) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-white rounded-3xl overflow-hidden">
       <button
         onClick={onToggle}
         className="w-full px-5 py-4 text-left flex items-center justify-between gap-4 cursor-pointer"
