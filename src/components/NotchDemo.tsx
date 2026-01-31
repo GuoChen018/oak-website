@@ -84,7 +84,7 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
     } else if (!timer.isRunning && audio.isPlaying) {
       audio.stop();
     }
-  }, [timer.isRunning, isMusicEnabled, audio]);
+  }, [timer.isRunning, isMusicEnabled, audio.isPlaying, audio.currentCategory]);
 
   // Auto-reset timer after 5 seconds and show toast
   const timerStartRef = useRef<number | null>(null);

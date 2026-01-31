@@ -116,13 +116,17 @@ export function useAudio(): UseAudioReturn {
   }, []);
 
   const play = useCallback((category: MusicCategory) => {
-    if (!audioRef.current || isTransitioningRef.current) return;
+    if (!audioRef.current) return;
 
-    // Clear any existing fade
+    // Clear any existing fade or transition
     if (fadeIntervalRef.current) {
       clearInterval(fadeIntervalRef.current);
       fadeIntervalRef.current = null;
     }
+    isTransitioningRef.current = false;
+
+    // Stop any currently playing audio immediately
+    audioRef.current.pause();
 
     setCurrentCategory(category);
     const audio = audioRef.current;
@@ -158,10 +162,38 @@ export function useAudio(): UseAudioReturn {
   }, [fadeIn]);
 
   const stop = useCallback(() => {
-    fadeOut(() => {
+    // Clear any existing fade first
+    if (fadeIntervalRef.current) {
+      clearInterval(fadeIntervalRef.current);
+      fadeIntervalRef.current = null;
+    }
+    // Quick fade out (500ms instead of 1500ms)
+    if (!audioRef.current) {
       setIsPlaying(false);
-    });
-  }, [fadeOut]);
+      return;
+    }
+    
+    const fadeSteps = 15;
+    const fadeDuration = 500;
+    const stepDuration = fadeDuration / fadeSteps;
+    const volumeStep = audioRef.current.volume / fadeSteps;
+
+    fadeIntervalRef.current = setInterval(() => {
+      if (!audioRef.current) return;
+
+      const newVolume = Math.max(0, audioRef.current.volume - volumeStep);
+      audioRef.current.volume = newVolume;
+
+      if (newVolume <= 0) {
+        if (fadeIntervalRef.current) {
+          clearInterval(fadeIntervalRef.current);
+          fadeIntervalRef.current = null;
+        }
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    }, stepDuration);
+  }, []);
 
   const toggle = useCallback((category: MusicCategory) => {
     if (isPlaying) {
