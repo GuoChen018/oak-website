@@ -125,6 +125,8 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
     if (timer.isRunning) {
       timer.pause();
     } else {
+      // Reset timer before starting a new session
+      timer.reset();
       timer.start();
     }
     setShowTimerDropdown(false);

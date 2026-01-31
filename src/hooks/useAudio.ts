@@ -19,6 +19,9 @@ const AUDIO_FILES: Record<MusicCategory, string> = {
   ambient: "/audio/ambient.mp3",
 };
 
+// Preloaded audio cache
+const preloadedAudio: Map<MusicCategory, HTMLAudioElement> = new Map();
+
 export function useAudio(): UseAudioReturn {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<MusicCategory>("piano");
@@ -26,9 +29,21 @@ export function useAudio(): UseAudioReturn {
   const fadeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isTransitioningRef = useRef(false);
 
-  // Initialize audio element on client side
+  // Initialize and preload all audio files on client side
   useEffect(() => {
     if (typeof window !== "undefined") {
+      // Preload all audio files
+      (Object.keys(AUDIO_FILES) as MusicCategory[]).forEach((category) => {
+        if (!preloadedAudio.has(category)) {
+          const audio = new Audio();
+          audio.src = AUDIO_FILES[category];
+          audio.preload = "auto";
+          audio.load();
+          preloadedAudio.set(category, audio);
+        }
+      });
+
+      // Set up main audio element
       audioRef.current = new Audio();
       audioRef.current.loop = true;
       audioRef.current.volume = 0;
