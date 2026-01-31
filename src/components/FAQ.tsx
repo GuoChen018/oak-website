@@ -13,11 +13,15 @@ interface FAQItem {
 const FAQ_ITEMS: FAQItem[] = [
   {
     question: "Can I try Oak for free?",
-    answer: "Yes! You can download Oak and try it out for 72 hours. After that you would need to purchase a license to continue using.",
+    answer: <>Yes! You can download Oak and try it out for 72 hours. After that you would need to <a href="https://buy.polar.sh/polar_cl_RPTLq5WQIhGjV8cIa2JqdD0PuiYdYeLcA5K0n0MIYJr" target="_blank" rel="noopener noreferrer" className="underline decoration-gray-400 underline-offset-2">purchase a license</a> to continue using.</>,
   },
   {
     question: "Do I have to pay for updates?",
     answer: "No. Oak is a one-time $4.99 purchase with all future updates included.",
+  },
+  {
+    question: "How many devices per license?",
+    answer: "You can use your license on up to 3 devices. You can also deactivate a specific device at any time through settings.",
   },
   {
     question: "May I request a refund?",
@@ -33,11 +37,15 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "How can I give feedback or report a bug?",
-    answer: <>You can share any feedback or bug via <a href="https://tally.so/r/eqRqBl" target="_blank" rel="noopener noreferrer" className="underline">this form</a>.</>,
+    answer: <>You can share any feedback or bug via <a href="https://tally.so/r/eqRqBl" target="_blank" rel="noopener noreferrer" className="underline decoration-gray-400 underline-offset-2">this form</a>.</>,
   },
   {
-    question: "Does this app collect any data?",
+    question: "Does Oak collect any data?",
     answer: "Task text stays on your device only. We use anonymous analytics to track usage metrics (like sessions started) to improve the app — no personal data is collected.",
+  },
+  {
+    question: "Where do you find the music?",
+    answer: "I manually curated them from Epidemic Sounds.",
   },
   {
     question: "What Macs are supported?",

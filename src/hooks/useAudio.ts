@@ -24,6 +24,7 @@ export function useAudio(): UseAudioReturn {
   const [currentCategory, setCurrentCategory] = useState<MusicCategory>("piano");
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fadeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isTransitioningRef = useRef(false);
 
   // Initialize audio element on client side
   useEffect(() => {
@@ -31,6 +32,7 @@ export function useAudio(): UseAudioReturn {
       audioRef.current = new Audio();
       audioRef.current.loop = true;
       audioRef.current.volume = 0;
+      audioRef.current.preload = "auto";
     }
 
     return () => {
@@ -99,7 +101,7 @@ export function useAudio(): UseAudioReturn {
   }, []);
 
   const play = useCallback((category: MusicCategory) => {
-    if (!audioRef.current) return;
+    if (!audioRef.current || isTransitioningRef.current) return;
 
     // Clear any existing fade
     if (fadeIntervalRef.current) {
@@ -109,12 +111,26 @@ export function useAudio(): UseAudioReturn {
 
     setCurrentCategory(category);
     audioRef.current.src = AUDIO_FILES[category];
-    audioRef.current.play().then(() => {
-      setIsPlaying(true);
-      fadeIn();
-    }).catch((err) => {
-      console.error("Audio playback failed:", err);
-    });
+    audioRef.current.volume = 0;
+    
+    // Wait for audio to be ready before playing
+    const handleCanPlay = () => {
+      if (!audioRef.current) return;
+      audioRef.current.removeEventListener('canplaythrough', handleCanPlay);
+      
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+        fadeIn();
+      }).catch((err) => {
+        // Ignore AbortError - it's expected when switching quickly
+        if (err.name !== 'AbortError') {
+          console.error("Audio playback failed:", err);
+        }
+      });
+    };
+    
+    audioRef.current.addEventListener('canplaythrough', handleCanPlay);
+    audioRef.current.load();
   }, [fadeIn]);
 
   const stop = useCallback(() => {
@@ -132,15 +148,37 @@ export function useAudio(): UseAudioReturn {
   }, [isPlaying, play, stop]);
 
   const setCategory = useCallback((category: MusicCategory) => {
+    if (isTransitioningRef.current) return;
+    
     setCurrentCategory(category);
     if (isPlaying && audioRef.current) {
+      isTransitioningRef.current = true;
+      
       // Fade out, switch, fade in
       fadeOut(() => {
         if (audioRef.current) {
           audioRef.current.src = AUDIO_FILES[category];
-          audioRef.current.play().then(() => {
-            fadeIn();
-          });
+          audioRef.current.volume = 0;
+          
+          const handleCanPlay = () => {
+            if (!audioRef.current) return;
+            audioRef.current.removeEventListener('canplaythrough', handleCanPlay);
+            
+            audioRef.current.play().then(() => {
+              fadeIn();
+              isTransitioningRef.current = false;
+            }).catch((err) => {
+              isTransitioningRef.current = false;
+              if (err.name !== 'AbortError') {
+                console.error("Audio playback failed:", err);
+              }
+            });
+          };
+          
+          audioRef.current.addEventListener('canplaythrough', handleCanPlay);
+          audioRef.current.load();
+        } else {
+          isTransitioningRef.current = false;
         }
       });
     }
