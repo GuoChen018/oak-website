@@ -73,7 +73,7 @@ export function Hero() {
         {/* Wallpaper with menu bar overlay */}
         <div className="relative rounded-xl border-2 border-black overflow-hidden">
           {/* Wallpaper Image */}
-          <div className="relative w-full aspect-[16/10] md:aspect-[16/5.5]">
+          <div className="relative w-full aspect-[16/11] md:aspect-[16/5.5]">
             <Image
               src="/mountain.jpg"
               alt="Mountain wallpaper"
@@ -113,7 +113,7 @@ export function Hero() {
       </motion.div>
 
       {/* Tagline and CTA */}
-      <div className="text-center mt-12">
+      <div className="text-center mt-8 md:mt-12">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
