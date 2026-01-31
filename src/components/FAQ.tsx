@@ -49,7 +49,7 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "What Macs are supported?",
-    answer: "Oak requires macOS 12.0 or later. It works best on MacBooks with a notch, but also works beautifully on external displays.",
+    answer: "Oak requires macOS 13.0 or later. It works best on MacBooks with a notch, but also works beautifully on external displays.",
   },
 ];
 

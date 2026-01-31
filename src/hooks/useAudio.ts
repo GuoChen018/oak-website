@@ -110,15 +110,13 @@ export function useAudio(): UseAudioReturn {
     }
 
     setCurrentCategory(category);
-    audioRef.current.src = AUDIO_FILES[category];
-    audioRef.current.volume = 0;
+    const audio = audioRef.current;
+    audio.src = AUDIO_FILES[category];
+    audio.volume = 0;
+    audio.currentTime = 0;
     
-    // Wait for audio to be ready before playing
-    const handleCanPlay = () => {
-      if (!audioRef.current) return;
-      audioRef.current.removeEventListener('canplaythrough', handleCanPlay);
-      
-      audioRef.current.play().then(() => {
+    const attemptPlay = () => {
+      audio.play().then(() => {
         setIsPlaying(true);
         fadeIn();
       }).catch((err) => {
@@ -129,8 +127,19 @@ export function useAudio(): UseAudioReturn {
       });
     };
     
-    audioRef.current.addEventListener('canplaythrough', handleCanPlay);
-    audioRef.current.load();
+    // If audio is already ready (cached), play immediately
+    // readyState >= 3 means HAVE_FUTURE_DATA or HAVE_ENOUGH_DATA
+    if (audio.readyState >= 3) {
+      attemptPlay();
+    } else {
+      // Wait for audio to be ready
+      const handleCanPlay = () => {
+        audio.removeEventListener('canplay', handleCanPlay);
+        attemptPlay();
+      };
+      audio.addEventListener('canplay', handleCanPlay);
+      audio.load();
+    }
   }, [fadeIn]);
 
   const stop = useCallback(() => {
@@ -156,15 +165,14 @@ export function useAudio(): UseAudioReturn {
       
       // Fade out, switch, fade in
       fadeOut(() => {
-        if (audioRef.current) {
-          audioRef.current.src = AUDIO_FILES[category];
-          audioRef.current.volume = 0;
+        const audio = audioRef.current;
+        if (audio) {
+          audio.src = AUDIO_FILES[category];
+          audio.volume = 0;
+          audio.currentTime = 0;
           
-          const handleCanPlay = () => {
-            if (!audioRef.current) return;
-            audioRef.current.removeEventListener('canplaythrough', handleCanPlay);
-            
-            audioRef.current.play().then(() => {
+          const attemptPlay = () => {
+            audio.play().then(() => {
               fadeIn();
               isTransitioningRef.current = false;
             }).catch((err) => {
@@ -175,8 +183,17 @@ export function useAudio(): UseAudioReturn {
             });
           };
           
-          audioRef.current.addEventListener('canplaythrough', handleCanPlay);
-          audioRef.current.load();
+          // If audio is already ready (cached), play immediately
+          if (audio.readyState >= 3) {
+            attemptPlay();
+          } else {
+            const handleCanPlay = () => {
+              audio.removeEventListener('canplay', handleCanPlay);
+              attemptPlay();
+            };
+            audio.addEventListener('canplay', handleCanPlay);
+            audio.load();
+          }
         } else {
           isTransitioningRef.current = false;
         }
