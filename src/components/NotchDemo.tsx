@@ -35,9 +35,29 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
   const [taskText, setTaskText] = useState("");
   const [mounted, setMounted] = useState(false);
   const [timerMinutes, setTimerMinutes] = useState(25);
+  const notchRef = useRef<HTMLDivElement>(null);
 
   const timer = useTimer(25);
   const audio = useAudio();
+
+  // Click outside handler for mobile
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (notchRef.current && !notchRef.current.contains(event.target as Node)) {
+        if (isExpanded) {
+          handleHover(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isExpanded]);
 
   // Dimensions matching the app
   const collapsedWidth = 220;
@@ -137,6 +157,7 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
 
   return (
     <div 
+      ref={notchRef}
       className="relative flex justify-center"
       onMouseEnter={() => handleHover(true)}
       onMouseLeave={() => handleHover(false)}
