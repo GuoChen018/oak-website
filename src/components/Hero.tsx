@@ -118,7 +118,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.6, ease: "easeOut" }}
-          className="text-6xl font-bold text-gray-900 mb-6"
+          className="text-6xl font-semibold text-gray-900 mb-6"
         >
           Focus mode. Made delightful
         </motion.h1>
@@ -126,7 +126,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.9, ease: "easeOut" }}
-          className="text-gray-600 text-xl mb-6 max-w-lg mx-auto"
+          className="text-gray-600 text-xl mb-6 max-w-lg mx-auto leading-relaxed"
         >
           Transform your Mac&apos;s notch into a focus space with calming music and a companion by your side.
         </motion.p>

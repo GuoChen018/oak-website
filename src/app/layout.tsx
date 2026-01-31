@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { Delicious_Handrawn, Figtree } from "next/font/google";
+import { Delicious_Handrawn } from "next/font/google";
 import "./globals.css";
 
 const deliciousHandrawn = Delicious_Handrawn({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-handdrawn",
-});
-
-const figtree = Figtree({
-  subsets: ["latin"],
-  variable: "--font-figtree",
 });
 
 export const metadata: Metadata = {
@@ -24,11 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${deliciousHandrawn.variable} ${figtree.variable}`}>
+    <html lang="en" className={deliciousHandrawn.variable}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration = "manual"` }} />
       </head>
-      <body className={`${figtree.className} antialiased`}>
+      <body className="antialiased">
         {children}
       </body>
     </html>
