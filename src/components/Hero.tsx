@@ -56,7 +56,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 2.5 }}
-            className="text-gray-800 text-xl font-handdrawn -mt-1"
+            className="text-gray-800 text-2xl font-handdrawn -mt-1"
           >
             Try it out!
           </motion.span>
@@ -118,7 +118,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.6, ease: "easeOut" }}
-          className="text-6xl font-semibold text-gray-900 mb-6"
+          className="text-6xl font-bold text-gray-900 mb-6"
         >
           Focus mode. Made delightful
         </motion.h1>
@@ -126,7 +126,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.9, ease: "easeOut" }}
-          className="text-gray-600 text-xl mb-6 max-w-md mx-auto"
+          className="text-gray-600 text-xl mb-6 max-w-lg mx-auto"
         >
           Transform your Mac&apos;s notch into a focus space with calming music and a companion by your side.
         </motion.p>
@@ -149,7 +149,9 @@ export function Hero() {
           
           {/* Secondary CTA - Purchase */}
           <a
-            href="#purchase"
+            href="https://buy.polar.sh/polar_cl_RPTLq5WQIhGjV8cIa2JqdD0PuiYdYeLcA5K0n0MIYJr"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 text-lg font-medium rounded-full hover:scale-[1.02] transition-transform backface-hidden transform-gpu"
           >
             <svg className="w-5 h-5 transition-transform duration-300 group-hover:-rotate-12" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">

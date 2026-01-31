@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Delicious_Handrawn, Inter } from "next/font/google";
+import { Delicious_Handrawn, Figtree } from "next/font/google";
 import "./globals.css";
 
 const deliciousHandrawn = Delicious_Handrawn({
@@ -8,9 +8,9 @@ const deliciousHandrawn = Delicious_Handrawn({
   variable: "--font-handdrawn",
 });
 
-const inter = Inter({
+const figtree = Figtree({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-figtree",
 });
 
 export const metadata: Metadata = {
@@ -24,11 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${deliciousHandrawn.variable} ${inter.variable}`}>
+    <html lang="en" className={`${deliciousHandrawn.variable} ${figtree.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: `history.scrollRestoration = "manual"` }} />
       </head>
-      <body className="antialiased">
+      <body className={`${figtree.className} antialiased`}>
         {children}
       </body>
     </html>

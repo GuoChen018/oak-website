@@ -148,7 +148,7 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
         animate={{
           width: earSize,
           height: earSize,
-          x: -(notchWidth / 2 + earSize),
+          x: -(notchWidth / 2 + earSize - 0.5),
         }}
         style={{
           left: '50%',
@@ -176,7 +176,7 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
         animate={{
           width: earSize,
           height: earSize,
-          x: notchWidth / 2,
+          x: notchWidth / 2 - 0.5,
         }}
         style={{
           left: '50%',
