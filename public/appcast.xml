@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Oak Updates</title>
+    <link>https://www.oakfocus.co/appcast.xml</link>
+    <description>Updates for Oak - Focus Timer for Mac</description>
+    <language>en</language>
+    
+    <!-- Latest version will be added here by release script -->
+    <!-- Example entry:
+    <item>
+      <title>Version 1.0.0</title>
+      <sparkle:version>1</sparkle:version>
+      <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+      <pubDate>Sat, 01 Feb 2026 12:00:00 +0000</pubDate>
+      <enclosure url="https://tryoak.app/releases/Oak-1.0.0.dmg"
+                 sparkle:edSignature="SIGNATURE_HERE"
+                 length="12345678"
+                 type="application/octet-stream"/>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+    </item>
+    -->
+    
+  </channel>
+</rss>
