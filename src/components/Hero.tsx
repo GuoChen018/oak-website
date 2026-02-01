@@ -52,7 +52,6 @@ export function Hero() {
               transition={{ duration: 0.3, delay: 2.1, ease: "easeOut" }}
             />
           </svg>
-<<<<<<< HEAD
           {/* Text with letter-by-letter animation */}
           <span className="text-gray-800 text-2xl font-handdrawn -mt-1 font-normal">
             {"Try hovering on this!".split("").map((char, index) => (
@@ -70,16 +69,6 @@ export function Hero() {
               </motion.span>
             ))}
           </span>
-=======
-          <motion.span 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 2.5 }}
-            className="text-gray-800 text-2xl font-handdrawn -mt-1"
-          >
-            Try hovering on this!
-          </motion.span>
->>>>>>> c23777b3f48789b7c4b1bd0644cda12b2c4e71f1
         </div>
       </div>
 
