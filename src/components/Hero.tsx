@@ -22,9 +22,9 @@ export function Hero() {
 
   return (
     <section className="w-full px-4 pt-4 pb-12">
-      {/* "Try it out!" annotation */}
+      {/* "Try hovering on this!" annotation */}
       <div className="flex justify-center mb-2">
-        <div className="flex items-start gap-1 ml-28">
+        <div className="flex items-start gap-1 ml-52">
           {/* Hand-drawn arrow */}
           <svg 
             className="w-10 h-9 mt-3" 
@@ -52,14 +52,23 @@ export function Hero() {
               transition={{ duration: 0.3, delay: 2.1, ease: "easeOut" }}
             />
           </svg>
-          <motion.span 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 2.5 }}
-            className="text-gray-800 text-2xl font-handdrawn -mt-1"
-          >
-            Try it out!
-          </motion.span>
+          {/* Text with letter-by-letter animation */}
+          <span className="text-gray-800 text-2xl font-handdrawn -mt-1 font-normal">
+            {"Try hovering on this!".split("").map((char, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.1,
+                  delay: 2.5 + index * 0.05,
+                  ease: "easeOut"
+                }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </span>
         </div>
       </div>
 
