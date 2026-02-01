@@ -9,12 +9,12 @@
     <!-- Latest version will be added here by release script -->
     <item>
       <title>Version 1.0.2</title>
-      <sparkle:version>4</sparkle:version>
+      <sparkle:version>5</sparkle:version>
       <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
-      <pubDate>Sun, 01 Feb 2026 15:56:57 -0500</pubDate>
+      <pubDate>Sun, 01 Feb 2026 16:15:15 -0500</pubDate>
       <enclosure url="https://x8izujfcrrgmft6e.public.blob.vercel-storage.com/releases/Oak-1.0.2.dmg"
-                 sparkle:edSignature="BqKDmSi+gIJD/92TwoVjRhRjqIleCU4xLbFW/FOf4AxIQYLt+9jxssiODFeqlQkDh+2dvOI7LOUuqfZepzFxCw=="
-                 length="86812137"
+                 sparkle:edSignature="XS5IJhhllcO5Gj1wO+7LWC097FZI6jD+Ggu5UpZD4IPK5+6ZfyOdTnx7v937X30UWuXUrwmLNtW5mkFRKTC2Ag=="
+                 length="89108671"
                  type="application/octet-stream"/>
       <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
     </item>
