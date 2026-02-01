@@ -12,7 +12,7 @@
       <sparkle:version>1</sparkle:version>
       <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
       <pubDate>Sat, 01 Feb 2026 12:00:00 +0000</pubDate>
-      <enclosure url="https://github.com/GuoChen018/oak-app/releases/download/v1.0.0/Oak-1.0.0.dmg"
+      <enclosure url="https://www.oakfocus.co/releases/Oak-1.0.0.dmg"
                  sparkle:edSignature="A2aYc8whAO44iGI20KvTtnJvEhhnz6I3p9CEaqb/cHqcxODNP78M6pyukSraPY7//mky+zjvcuuxxfiqIpZYCQ=="
                  length="172852744"
                  type="application/octet-stream"/>
