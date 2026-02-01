@@ -22,7 +22,7 @@ export function Hero() {
 
   return (
     <section className="w-full px-4 pt-4 pb-12">
-      {/* "Try it out!" annotation */}
+      {/* "Try hovering on this!" annotation */}
       <div className="flex justify-center mb-2">
         <div className="flex items-start gap-1 ml-28">
           {/* Hand-drawn arrow */}
@@ -30,6 +30,7 @@ export function Hero() {
             className="w-10 h-9 mt-3" 
             viewBox="0 0 63 55" 
             fill="none"
+            style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))' }}
           >
             {/* Main curved line */}
             <motion.path 
@@ -37,6 +38,8 @@ export function Hero() {
               stroke="#3E3838" 
               strokeWidth="3.5" 
               strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 1.6, ease: "easeOut" }}
@@ -47,6 +50,8 @@ export function Hero() {
               stroke="#3E3838" 
               strokeWidth="3.5" 
               strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.3, delay: 2.1, ease: "easeOut" }}
@@ -58,7 +63,7 @@ export function Hero() {
             transition={{ duration: 0.3, delay: 2.5 }}
             className="text-gray-800 text-2xl font-handdrawn -mt-1"
           >
-            Try it out!
+            Try hovering on this!
           </motion.span>
         </div>
       </div>
