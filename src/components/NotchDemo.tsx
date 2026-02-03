@@ -76,6 +76,12 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
       const img = new window.Image();
       img.src = `/focus-pals/${pal}.png`;
     });
+    
+    // Preload music icons
+    MUSIC_CATEGORIES.forEach((category) => {
+      const img = new window.Image();
+      img.src = `/${category.id}-icon.png`;
+    });
   }, []);
 
   useEffect(() => {
@@ -278,10 +284,13 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
         </AnimatePresence>
       </motion.div>
 
-      {/* Hidden preload images for focus pals */}
+      {/* Hidden preload images for focus pals and music icons */}
       <div className="hidden">
         {FOCUS_PALS.map((pal) => (
           <img key={pal} src={`/focus-pals/${pal}.png`} alt="" />
+        ))}
+        {MUSIC_CATEGORIES.map((category) => (
+          <img key={category.id} src={`/${category.id}-icon.png`} alt="" />
         ))}
       </div>
     </div>
