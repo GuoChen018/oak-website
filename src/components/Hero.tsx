@@ -21,7 +21,7 @@ export function Hero() {
   }, [showToast]);
 
   return (
-    <section className="w-full px-4 pt-4 pb-12">
+    <section className="w-full px-4 pt-4 pb-20">
       {/* "Try hovering on this!" annotation */}
       <div className="flex justify-center mb-2">
         <div className="flex items-start gap-1 ml-52">
