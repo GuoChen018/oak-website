@@ -129,7 +129,7 @@ export function Hero() {
           transition={{ duration: 0.4, delay: 0.6, ease: "easeOut" }}
           className="text-4xl md:text-6xl font-medium text-gray-900 mb-4 leading-tight"
         >
-          Focus mode. Made delightful
+          Focus mode. Made delightful.
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
