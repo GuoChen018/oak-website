@@ -138,7 +138,7 @@ function ThankYouHero() {
         >
           {/* Download button only */}
           <a
-            href="https://x8izujfcrrgmft6e.public.blob.vercel-storage.com/releases/Oak-1.0.14.dmg?b=18"
+            href="https://github.com/GuoChen018/oak-website/releases/download/v1.0.14/Oak-1.0.14.dmg"
             download="Oak-1.0.14.dmg"
             className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-base font-medium rounded-full hover:scale-[1.02] transition-transform backface-hidden transform-gpu w-full sm:w-auto"
           >
