@@ -28,6 +28,7 @@ export function useAudio(): UseAudioReturn {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const fadeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isTransitioningRef = useRef(false);
+  const shouldPlayRef = useRef(false);
 
   // Initialize and preload all audio files on client side
   useEffect(() => {
@@ -118,6 +119,8 @@ export function useAudio(): UseAudioReturn {
   const play = useCallback((category: MusicCategory) => {
     if (!audioRef.current) return;
 
+    shouldPlayRef.current = true;
+
     // Clear any existing fade or transition
     if (fadeIntervalRef.current) {
       clearInterval(fadeIntervalRef.current);
@@ -135,7 +138,14 @@ export function useAudio(): UseAudioReturn {
     audio.currentTime = 0;
     
     const attemptPlay = () => {
+      // Abort if stop() was called after this play() was initiated
+      if (!shouldPlayRef.current) return;
+
       audio.play().then(() => {
+        if (!shouldPlayRef.current) {
+          audio.pause();
+          return;
+        }
         setIsPlaying(true);
         fadeIn();
       }).catch((err) => {
@@ -162,19 +172,20 @@ export function useAudio(): UseAudioReturn {
   }, [fadeIn]);
 
   const stop = useCallback(() => {
+    shouldPlayRef.current = false;
+
     // Clear any existing fade first
     if (fadeIntervalRef.current) {
       clearInterval(fadeIntervalRef.current);
       fadeIntervalRef.current = null;
     }
-    // Quick fade out (500ms instead of 1500ms)
     if (!audioRef.current) {
       setIsPlaying(false);
       return;
     }
     
-    const fadeSteps = 15;
-    const fadeDuration = 500;
+    const fadeSteps = 30;
+    const fadeDuration = 1500;
     const stepDuration = fadeDuration / fadeSteps;
     const volumeStep = audioRef.current.volume / fadeSteps;
 

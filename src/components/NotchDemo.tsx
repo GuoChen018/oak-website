@@ -87,34 +87,45 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
   useEffect(() => {
     if (timer.isRunning && isMusicEnabled && !audio.isPlaying) {
       audio.play(audio.currentCategory);
-    } else if (!timer.isRunning && audio.isPlaying) {
+    } else if (audio.isPlaying && (!timer.isRunning || !isMusicEnabled)) {
       audio.stop();
     }
   }, [timer.isRunning, isMusicEnabled, audio.isPlaying, audio.currentCategory]);
 
-  // Auto-reset timer after 5 seconds and show toast
-  const timerStartRef = useRef<number | null>(null);
+  // Auto-reset timer after 10 seconds of running time and show toast
+  const runningElapsedRef = useRef<number>(0);
+  const lastResumeRef = useRef<number | null>(null);
   
   useEffect(() => {
-    if (timer.isRunning && timerStartRef.current === null) {
-      timerStartRef.current = Date.now();
-    }
-    
-    if (!timer.isRunning) {
-      timerStartRef.current = null;
-      return;
-    }
+    if (timer.isRunning) {
+      // Timer just started or resumed — mark the resume time
+      lastResumeRef.current = Date.now();
 
-    const checkTime = setInterval(() => {
-      if (timerStartRef.current && Date.now() - timerStartRef.current >= 10000) {
-        timer.pause();
-        timer.reset();
-        timerStartRef.current = null;
-        onShowToast?.();
-      }
-    }, 100);
+      const checkTime = setInterval(() => {
+        const elapsed = runningElapsedRef.current + (Date.now() - (lastResumeRef.current ?? Date.now()));
+        if (elapsed >= 10000) {
+          timer.pause();
+          timer.reset();
+          audio.stop();
+          runningElapsedRef.current = 0;
+          lastResumeRef.current = null;
+          onShowToast?.();
+        }
+      }, 100);
 
-    return () => clearInterval(checkTime);
+      return () => {
+        // Accumulate time spent running before pause/stop
+        if (lastResumeRef.current !== null) {
+          runningElapsedRef.current += Date.now() - lastResumeRef.current;
+          lastResumeRef.current = null;
+        }
+        clearInterval(checkTime);
+      };
+    } else if (!timer.isPaused) {
+      // Fully stopped (not just paused) — reset accumulated time
+      runningElapsedRef.current = 0;
+      lastResumeRef.current = null;
+    }
   }, [timer.isRunning]);
 
   const handleHover = (hovering: boolean) => {
@@ -127,14 +138,25 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
     }
   };
 
-  const handleStartStop = () => {
+  const handleStart = () => {
+    // Reset timer before starting a new session
+    timer.reset();
+    timer.start();
+    setShowTimerDropdown(false);
+  };
+
+  const handlePauseResume = () => {
     if (timer.isRunning) {
       timer.pause();
-    } else {
-      // Reset timer before starting a new session
-      timer.reset();
-      timer.start();
+    } else if (timer.isPaused) {
+      timer.resume();
     }
+  };
+
+  const handleStop = () => {
+    timer.pause();
+    timer.reset();
+    audio.stop();
     setShowTimerDropdown(false);
   };
 
@@ -146,11 +168,6 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
 
   const toggleMusic = () => {
     setIsMusicEnabled(!isMusicEnabled);
-    if (timer.isRunning) {
-      audio.toggle(audio.currentCategory);
-    } else if (isMusicEnabled && audio.isPlaying) {
-      audio.stop();
-    }
   };
 
   if (!mounted) {
@@ -267,14 +284,16 @@ export function NotchDemo({ onShowToast }: NotchDemoProps) {
               setCategory={audio.setCategory}
               taskText={taskText}
               setTaskText={setTaskText}
-              onStartStop={handleStartStop}
+              onStart={handleStart}
+              onPauseResume={handlePauseResume}
+              onStop={handleStop}
               onTimerSelect={handleTimerSelect}
             />
           ) : (
             <CollapsedContent
               key="collapsed"
               selectedPal={selectedPal}
-              timeDisplay={timer.isRunning 
+              timeDisplay={(timer.isRunning || timer.isPaused)
                 ? timer.formatTime(timer.timeRemaining) 
                 : timer.formatTime(timerMinutes * 60)}
               realNotchWidth={realNotchWidth}
@@ -364,7 +383,9 @@ interface ExpandedContentProps {
   setCategory: (category: MusicCategory) => void;
   taskText: string;
   setTaskText: (text: string) => void;
-  onStartStop: () => void;
+  onStart: () => void;
+  onPauseResume: () => void;
+  onStop: () => void;
   onTimerSelect: (minutes: number) => void;
 }
 
@@ -385,7 +406,9 @@ function ExpandedContent({
   setCategory,
   taskText,
   setTaskText,
-  onStartStop,
+  onStart,
+  onPauseResume,
+  onStop,
   onTimerSelect,
 }: ExpandedContentProps) {
   return (
@@ -463,7 +486,9 @@ function ExpandedContent({
                 setShowTimerDropdown={setShowTimerDropdown}
                 taskText={taskText}
                 setTaskText={setTaskText}
-                onStartStop={onStartStop}
+                onStart={onStart}
+                onPauseResume={onPauseResume}
+                onStop={onStop}
                 onTimerSelect={onTimerSelect}
                 selectedPal={selectedPal}
                 onFocusPalClick={() => setShowFocusPalGallery(true)}
@@ -486,7 +511,9 @@ interface TimerInterfaceProps {
   setShowTimerDropdown: (show: boolean) => void;
   taskText: string;
   setTaskText: (text: string) => void;
-  onStartStop: () => void;
+  onStart: () => void;
+  onPauseResume: () => void;
+  onStop: () => void;
   onTimerSelect: (minutes: number) => void;
   selectedPal: string;
   onFocusPalClick: () => void;
@@ -502,7 +529,9 @@ function TimerInterface({
   setShowTimerDropdown,
   taskText,
   setTaskText,
-  onStartStop,
+  onStart,
+  onPauseResume,
+  onStop,
   onTimerSelect,
   selectedPal,
   onFocusPalClick,
@@ -516,7 +545,7 @@ function TimerInterface({
       <div className="relative">
         <div className="flex items-center gap-3 px-4 py-3 bg-[#282828] rounded-[24px]">
           {/* Timer button/display */}
-          {timer.isRunning ? (
+          {(timer.isRunning || timer.isPaused) ? (
             <span className="text-white text-sm font-medium px-3 py-1.5 bg-[#4F4F4F] rounded-full tabular-nums whitespace-nowrap">
               {timer.formatTime(timer.timeRemaining)}
             </span>
@@ -538,21 +567,46 @@ function TimerInterface({
             className="flex-1 bg-transparent text-white text-sm placeholder-[#999] outline-none min-w-0"
           />
 
-          {/* Play/Stop button */}
-          <button
-            onClick={onStartStop}
-            className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0 cursor-pointer"
-          >
-            {timer.isRunning ? (
-              <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <rect x="6" y="6" width="12" height="12" rx="3" />
-              </svg>
-            ) : (
+          {(timer.isRunning || timer.isPaused) ? (
+            <>
+              {/* Pause/Resume button */}
+              <button
+                onClick={onPauseResume}
+                className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0 cursor-pointer"
+              >
+                {timer.isRunning ? (
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <rect x="7" y="6" width="3.5" height="12" rx="1" />
+                    <rect x="13.5" y="6" width="3.5" height="12" rx="1" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z" />
+                  </svg>
+                )}
+              </button>
+
+              {/* Stop button */}
+              <button
+                onClick={onStop}
+                className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0 cursor-pointer"
+              >
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <rect x="6" y="6" width="12" height="12" rx="3" />
+                </svg>
+              </button>
+            </>
+          ) : (
+            /* Play button (start new session) */
+            <button
+              onClick={onStart}
+              className="p-2 bg-[#4F4F4F] rounded-full hover:bg-[#5F5F5F] transition-colors flex-shrink-0 cursor-pointer"
+            >
               <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z" />
               </svg>
-            )}
-          </button>
+            </button>
+          )}
         </div>
 
         {/* Timer dropdown */}

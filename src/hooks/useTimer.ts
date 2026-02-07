@@ -5,9 +5,11 @@ import { useState, useEffect, useCallback, useRef } from "react";
 interface UseTimerReturn {
   timeRemaining: number;
   isRunning: boolean;
+  isPaused: boolean;
   isComplete: boolean;
   start: () => void;
   pause: () => void;
+  resume: () => void;
   reset: () => void;
   setDuration: (minutes: number) => void;
   formatTime: (seconds: number) => string;
@@ -17,6 +19,7 @@ export function useTimer(initialMinutes: number = 25): UseTimerReturn {
   const [duration, setDurationState] = useState(initialMinutes * 60);
   const [timeRemaining, setTimeRemaining] = useState(initialMinutes * 60);
   const [isRunning, setIsRunning] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -30,17 +33,27 @@ export function useTimer(initialMinutes: number = 25): UseTimerReturn {
   const start = useCallback(() => {
     if (timeRemaining > 0) {
       setIsRunning(true);
+      setIsPaused(false);
       setIsComplete(false);
     }
   }, [timeRemaining]);
 
   const pause = useCallback(() => {
     setIsRunning(false);
+    setIsPaused(true);
     clearTimerInterval();
   }, [clearTimerInterval]);
 
+  const resume = useCallback(() => {
+    if (timeRemaining > 0) {
+      setIsRunning(true);
+      setIsPaused(false);
+    }
+  }, [timeRemaining]);
+
   const reset = useCallback(() => {
     setIsRunning(false);
+    setIsPaused(false);
     setIsComplete(false);
     setTimeRemaining(duration);
     clearTimerInterval();
@@ -51,6 +64,7 @@ export function useTimer(initialMinutes: number = 25): UseTimerReturn {
     setDurationState(seconds);
     setTimeRemaining(seconds);
     setIsRunning(false);
+    setIsPaused(false);
     setIsComplete(false);
     clearTimerInterval();
   }, [clearTimerInterval]);
@@ -82,9 +96,11 @@ export function useTimer(initialMinutes: number = 25): UseTimerReturn {
   return {
     timeRemaining,
     isRunning,
+    isPaused,
     isComplete,
     start,
     pause,
+    resume,
     reset,
     setDuration,
     formatTime,
