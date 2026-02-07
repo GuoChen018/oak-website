@@ -8,6 +8,17 @@
     
     <!-- Latest version will be added here by release script -->
     <item>
+      <title>Version 1.0.14</title>
+      <sparkle:version>18</sparkle:version>
+      <sparkle:shortVersionString>1.0.14</sparkle:shortVersionString>
+      <pubDate>Fri, 06 Feb 2026 23:25:45 -0500</pubDate>
+      <enclosure url="https://x8izujfcrrgmft6e.public.blob.vercel-storage.com/releases/Oak-1.0.14.dmg"
+                 sparkle:edSignature="pdx5IB80T4qS84onN3ugf2LSnIjK5Bcu9Psb2+3Z9jGh0OH9xqwx0oijFS+qY/HyT5Xjz4pm72HZjkti0QTICg=="
+                 length="88999431"
+                 type="application/octet-stream"/>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+    </item>
+    <item>
       <title>Version 1.0.13</title>
       <sparkle:version>17</sparkle:version>
       <sparkle:shortVersionString>1.0.13</sparkle:shortVersionString>

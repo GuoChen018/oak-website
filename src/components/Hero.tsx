@@ -147,8 +147,8 @@ export function Hero() {
         >
           {/* Main CTA - Download for Mac */}
           <a
-            href="https://x8izujfcrrgmft6e.public.blob.vercel-storage.com/releases/Oak-1.0.13.dmg?b=17"
-            download="Oak-1.0.13.dmg"
+            href="https://x8izujfcrrgmft6e.public.blob.vercel-storage.com/releases/Oak-1.0.14.dmg?b=18"
+            download="Oak-1.0.14.dmg"
             className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-base font-medium rounded-full hover:scale-[1.02] transition-transform backface-hidden transform-gpu w-full sm:w-auto"
           >
             <svg className="w-5 h-5 transition-transform duration-300 group-hover:-rotate-12" viewBox="0 0 24 24" fill="currentColor">
