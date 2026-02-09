@@ -24,10 +24,10 @@ export function Hero() {
     <section className="w-full px-4 pt-4 pb-20">
       {/* "Try hovering on this!" annotation */}
       <div className="flex justify-center mb-2">
-        <div className="flex items-start gap-1 ml-52">
+        <div className="flex items-start gap-1 ml-40 sm:ml-52">
           {/* Hand-drawn arrow */}
           <svg 
-            className="w-10 h-9 mt-3" 
+            className="w-8 h-7 mt-2 sm:w-10 sm:h-9 sm:mt-3" 
             viewBox="0 0 63 55" 
             fill="none"
           >
@@ -53,7 +53,7 @@ export function Hero() {
             />
           </svg>
           {/* Text with letter-by-letter animation */}
-          <span className="text-gray-800 text-2xl font-handdrawn -mt-1 font-normal">
+          <span className="text-gray-800 text-lg sm:text-2xl font-handdrawn -mt-1 font-normal">
             {"Try hovering on this!".split("").map((char, index) => (
               <motion.span
                 key={index}
