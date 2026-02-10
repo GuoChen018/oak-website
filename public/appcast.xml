@@ -8,6 +8,17 @@
     
     <!-- Latest version will be added here by release script -->
     <item>
+      <title>Version 1.0.19</title>
+      <sparkle:version>23</sparkle:version>
+      <sparkle:shortVersionString>1.0.19</sparkle:shortVersionString>
+      <pubDate>Tue, 10 Feb 2026 00:38:55 -0500</pubDate>
+      <enclosure url="https://github.com/GuoChen018/oak-website/releases/download/v1.0.19/Oak-1.0.19.dmg"
+                 sparkle:edSignature="2wLiSMMmEnnV/z8NBWNaQ5BAl5Fje9QqTunQq1GYJ3P2JoQqEhGlyT3smXoZdVrhioPjXrftrZayoK/SuNBpAA=="
+                 length="88972842"
+                 type="application/octet-stream"/>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+    </item>
+    <item>
       <title>Version 1.0.18</title>
       <sparkle:version>22</sparkle:version>
       <sparkle:shortVersionString>1.0.18</sparkle:shortVersionString>
