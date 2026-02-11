@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import posthog from "posthog-js";
 
 import { ReactNode } from "react";
 
@@ -61,6 +62,11 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggleItem = (index: number) => {
+    if (openIndex !== index) {
+      posthog.capture("website_faq_clicked", {
+        question: FAQ_ITEMS[index].question,
+      });
+    }
     setOpenIndex(openIndex === index ? null : index);
   };
 

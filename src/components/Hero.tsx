@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import posthog from "posthog-js";
 import { MacMenuBar } from "./MacMenuBar";
 import { NotchDemo } from "./NotchDemo";
 
@@ -149,6 +150,7 @@ export function Hero() {
           <a
             href="https://pub-01b3888265a745198ab9f3c8711ac6c5.r2.dev/Oak-1.0.25.dmg"
             download="Oak-1.0.25.dmg"
+            onClick={() => posthog.capture("website_download_clicked")}
             className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-base font-medium rounded-full hover:scale-[1.02] transition-transform backface-hidden transform-gpu w-full sm:w-auto"
           >
             <svg className="w-5 h-5 transition-transform duration-300 group-hover:-rotate-12" viewBox="0 0 24 24" fill="currentColor">
@@ -162,6 +164,7 @@ export function Hero() {
             href="https://buy.polar.sh/polar_cl_RPTLq5WQIhGjV8cIa2JqdD0PuiYdYeLcA5K0n0MIYJr"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => posthog.capture("website_purchase_clicked")}
             className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 text-base font-medium rounded-full hover:scale-[1.02] transition-transform backface-hidden transform-gpu w-full sm:w-auto"
           >
             <svg className="w-5 h-5 transition-transform duration-300 group-hover:-rotate-12" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
