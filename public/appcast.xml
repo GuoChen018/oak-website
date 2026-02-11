@@ -8,6 +8,17 @@
     
     <!-- Latest version will be added here by release script -->
     <item>
+      <title>Version 1.0.24</title>
+      <sparkle:version>28</sparkle:version>
+      <sparkle:shortVersionString>1.0.24</sparkle:shortVersionString>
+      <pubDate>Wed, 11 Feb 2026 08:40:42 -0500</pubDate>
+      <enclosure url="https://pub-01b3888265a745198ab9f3c8711ac6c5.r2.dev/Oak-1.0.24.dmg"
+                 sparkle:edSignature="g6jAvONdbcJbRZt0xUHIEINGz5MSptmS1L8sxskWacz7ZjV3FSwpvuzuQnswYqbQTxtj846t0BzRIGDMfMYeAw=="
+                 length="90503416"
+                 type="application/octet-stream"/>
+      <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+    </item>
+    <item>
       <title>Version 1.0.23</title>
       <sparkle:version>27</sparkle:version>
       <sparkle:shortVersionString>1.0.23</sparkle:shortVersionString>
