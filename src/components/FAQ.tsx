@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import posthog from "posthog-js";
+import Image from "next/image";
 
 import { ReactNode } from "react";
 
@@ -19,6 +20,25 @@ const FAQ_ITEMS: FAQItem[] = [
   {
     question: "Do I have to pay for updates?",
     answer: "No. Oak is a one-time $4.99 purchase with all future updates included.",
+  },
+  {
+    question: "Can I add my own focus pal?",
+    answer: (
+      <>
+        <p>Yes! You can upload any square image or GIF in Oak.</p>
+        <div
+          className="relative mt-3 rounded-xl overflow-hidden bg-gray-100"
+          style={{ aspectRatio: "1024 / 335" }}
+        >
+          <Image
+            src="/custom-focus-pal.png"
+            alt="Custom focus pal in Oak's notch"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </>
+    ),
   },
   {
     question: "How many devices per license?",
@@ -122,10 +142,8 @@ function FAQAccordionItem({ item, isOpen, onToggle }: FAQAccordionItemProps) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="px-5 pb-4">
-              <p className="text-base text-gray-600 leading-relaxed">
-                {item.answer}
-              </p>
+            <div className="px-5 pb-5 text-base text-gray-600 leading-relaxed">
+              {item.answer}
             </div>
           </motion.div>
         )}
