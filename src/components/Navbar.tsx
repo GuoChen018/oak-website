@@ -34,13 +34,21 @@ export function Navbar() {
         <span className="text-lg font-semibold text-gray-900">Oak</span>
       </motion.a>
 
-      {/* FAQ Link */}
-      <a 
-        href="#faq" 
-        className="text-base font-medium text-gray-600 hover:text-gray-900 transition-colors"
-      >
-        FAQ
-      </a>
+      {/* Navigation Links */}
+      <div className="flex items-center gap-4">
+        <a 
+          href="/#faq" 
+          className="text-base font-medium text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          FAQ
+        </a>
+        <a 
+          href="/build-log" 
+          className="text-base font-medium text-gray-600 hover:text-gray-900 transition-colors"
+        >
+          Build Log
+        </a>
+      </div>
     </motion.nav>
   );
 }

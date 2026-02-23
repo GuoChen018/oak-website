@@ -28,7 +28,7 @@ const FAQ_ITEMS: FAQItem[] = [
         <p>Yes! You can upload any square image or GIF in Oak.</p>
         <div
           className="relative mt-3 rounded-xl overflow-hidden bg-gray-100"
-          style={{ aspectRatio: "1024 / 335" }}
+          style={{ aspectRatio: "1024 / 576" }}
         >
           <Image
             src="/custom-focus-pal.png"
