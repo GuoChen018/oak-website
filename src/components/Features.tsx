@@ -169,16 +169,8 @@ function PersistentTimerCard() {
 
       {/* Timer display - right-aligned, fits inside the 90px notch */}
       <div className="relative z-10 flex justify-end mt-[20px]" style={{ marginRight: 44 }}>
-        <span className="text-white text-4xl font-semibold tracking-tight">
-          {display.split("").map((char, i) => (
-            <span
-              key={i}
-              className="inline-block text-center"
-              style={{ width: char === ":" ? "16px" : "24px" }}
-            >
-              {char}
-            </span>
-          ))}
+        <span className="text-white text-4xl font-semibold tracking-tight" style={{ minWidth: "140px", textAlign: "right" }}>
+          {display}
         </span>
       </div>
 
@@ -535,36 +527,46 @@ function TaskLogCard() {
             {MOCK_TASKS.map((task, i) => (
               <div
                 key={i}
-                className="flex items-center gap-2 py-2 border-b border-[#2A2A2A] last:border-b-0"
+                className="flex items-center gap-2"
+                style={{ height: 32 }}
               >
-                <span className="text-[#555] text-[11px] w-16 flex-shrink-0">
+                {/* Timeline dot + line */}
+                <div className="relative flex-shrink-0 flex items-center justify-center" style={{ width: 8, height: 32 }}>
+                  <div className="w-2 h-2 rounded-full bg-[#303035] relative z-10" />
+                  {i < MOCK_TASKS.length - 1 && (
+                    <div className="absolute bg-[#303035]" style={{ width: 2, top: 24, bottom: -8 }} />
+                  )}
+                </div>
+                <span className="text-[#777] text-xs w-[65px] flex-shrink-0">
                   {task.date}
                 </span>
                 <span className="text-white text-[13px] font-medium flex-1 truncate">
                   {task.name}
                 </span>
-                <span className="text-[#777] text-[11px] flex-shrink-0">
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <div className="relative w-5 h-5">
+                    <Image
+                      src={`/focus-pals/${task.pal}.png`}
+                      alt={task.pal}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="relative w-5 h-5">
+                    <Image
+                      src={`/${task.genre}-icon.png`}
+                      alt={task.genre}
+                      width={20}
+                      height={20}
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                </div>
+                <span className="text-[#777] text-xs flex-shrink-0 w-[50px] text-right">
                   {task.duration}
                 </span>
-                <div className="relative w-4 h-4 flex-shrink-0">
-                  <Image
-                    src={`/focus-pals/${task.pal}.png`}
-                    alt={task.pal}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
-                </div>
-                <div className="relative w-4 h-4 flex-shrink-0">
-                  <Image
-                    src={`/${task.genre}-icon.png`}
-                    alt={task.genre}
-                    width={16}
-                    height={16}
-                    className="object-contain"
-                    unoptimized
-                  />
-                </div>
               </div>
             ))}
           </div>
@@ -634,10 +636,10 @@ function FocusPalsCard() {
   const [selectedPal, setSelectedPal] = useState("dragon");
 
   return (
-    <FeatureCard colSpan className="overflow-hidden relative pt-0 px-6 pb-6">
+    <FeatureCard colSpan className="overflow-hidden relative pt-0 px-4 md:px-6 pb-6">
       {/* Top-right notch (Custom Focus Pal style - opening on left) */}
-      <div className="absolute top-0 right-0 h-[60px] bg-black rounded-bl-[20px]" style={{ width: 400 }} />
-      <div className="absolute top-0 w-[20px] h-[20px]" style={{ right: 400 }}>
+      <div className="hidden md:block absolute top-0 right-0 h-[60px] bg-black rounded-bl-[20px]" style={{ width: 400 }} />
+      <div className="hidden md:block absolute top-0 w-[20px] h-[20px]" style={{ right: 400 }}>
         <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="none">
           <path d="M24 0 L24 24 Q24 0 0 0 Z" fill="black" />
         </svg>
@@ -648,10 +650,10 @@ function FocusPalsCard() {
         <div>
           <h3 className="text-white text-lg font-semibold">Focus Pals</h3>
           <p className="text-[#999] text-sm mt-1">
-            20+ default animated companions, always by your side.
+            20+ cute animated companions, always by your side.
           </p>
         </div>
-        <div className="relative w-8 h-8 mr-[320px] -mt-[2px]">
+        <div className="hidden md:block relative w-8 h-8 mr-[325px] -mt-[2px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedPal}
@@ -681,10 +683,10 @@ function FocusPalsCard() {
             onClick={() => setSelectedPal(pal)}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.95 }}
-            className={`relative w-10 h-10 rounded-xl cursor-pointer transition-colors duration-200 ${
+            className={`relative w-10 h-10 rounded-xl md:cursor-pointer transition-colors duration-200 ${
               selectedPal === pal
-                ? "bg-white/20 ring-1 ring-white/30"
-                : "hover:bg-white/10"
+                ? "md:bg-white/20 md:ring-1 md:ring-white/30"
+                : "md:hover:bg-white/10"
             }`}
           >
             <Image
@@ -745,7 +747,7 @@ function YourMusicCard() {
 export function Features() {
   return (
     <section className="w-full py-16">
-      <div className="w-full bg-black rounded-[64px] py-20 px-4 md:px-8">
+      <div className="w-full bg-black rounded-[32px] md:rounded-[64px] py-12 md:py-20 px-3 md:px-8">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
           <CustomFocusPalCard />
           <PersistentTimerCard />
