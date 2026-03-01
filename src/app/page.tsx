@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
+import { Features } from "@/components/Features";
 import { FAQ } from "@/components/FAQ";
 
 export default function Home() {
@@ -10,6 +11,9 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero />
+
+      {/* Features Section */}
+      <Features />
 
       {/* FAQ Section */}
       <section id="faq" className="py-16">
