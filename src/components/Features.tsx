@@ -641,7 +641,9 @@ function FocusMusicCard() {
 // ─── Card 6: Focus Pals (full width) ────────────────────────────────────────
 
 function FocusPalsCard() {
-  const [selectedPal, setSelectedPal] = useState("dragon");
+  const [selectedPal, setSelectedPal] = useState("baby-chick");
+  const [hoveredPal, setHoveredPal] = useState<string | null>(null);
+  const displayPal = hoveredPal || selectedPal;
 
   return (
     <FeatureCard colSpan className="overflow-hidden relative pt-0 px-4 md:px-6 pb-6">
@@ -656,9 +658,9 @@ function FocusPalsCard() {
       {/* Title + notch pal preview on the same line */}
       <div className="relative z-10 flex items-start justify-between pt-4 mb-3">
         <div>
-          <h3 className="text-white text-lg font-semibold">Focus Pals</h3>
+          <h3 className="text-white text-lg font-semibold">20+ Focus Pals</h3>
           <p className="text-[#999] text-sm mt-1">
-            20+ cute animated companions, always by your side.
+            Default animated companions that stay with you.
           </p>
         </div>
         <div className="hidden md:block relative w-8 h-8 mr-[325px] -mt-[2px]">
@@ -683,29 +685,63 @@ function FocusPalsCard() {
         </div>
       </div>
 
-      {/* Pals grid - spans full width */}
-      <div className="flex flex-wrap gap-2">
-        {ALL_FOCUS_PALS.map((pal) => (
-          <motion.button
-            key={pal}
-            onClick={() => setSelectedPal(pal)}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.95 }}
-            className={`relative w-10 h-10 rounded-xl md:cursor-pointer transition-colors duration-200 ${
-              selectedPal === pal
-                ? "md:bg-white/20 md:ring-1 md:ring-white/30"
-                : "md:hover:bg-white/10"
-            }`}
-          >
-            <Image
-              src={`/focus-pals/${pal}.png`}
-              alt={PAL_DISPLAY_NAMES[pal] || pal}
-              fill
-              className="object-contain p-1"
-              unoptimized
-            />
-          </motion.button>
-        ))}
+      <div className="flex flex-col md:flex-row gap-4">
+        {/* Left: grid */}
+        <div className="md:w-1/2">
+          <div className="flex flex-wrap gap-2">
+            {ALL_FOCUS_PALS.map((pal) => (
+              <motion.button
+                key={pal}
+                onClick={() => setSelectedPal(pal)}
+                onMouseEnter={() => setHoveredPal(pal)}
+                onMouseLeave={() => setHoveredPal(null)}
+                whileTap={{ scale: 0.95 }}
+                className={`relative w-10 h-10 rounded-xl cursor-pointer transition-all duration-200 ${
+                  selectedPal === pal
+                    ? "bg-white/20 ring-1 ring-white/30"
+                    : hoveredPal === pal
+                      ? "bg-white/15"
+                      : "hover:bg-white/10"
+                }`}
+              >
+                <Image
+                  src={`/focus-pals/${pal}.png`}
+                  alt={PAL_DISPLAY_NAMES[pal] || pal}
+                  fill
+                  className="object-contain p-1"
+                  unoptimized
+                />
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: preview card */}
+        <div className="hidden md:flex flex-col items-center justify-center md:w-1/2 md:self-stretch bg-[#2A2A2C] rounded-xl p-4">
+          <div className="relative w-20 h-20 mb-2">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={displayPal}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.85 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={`/focus-pals/${displayPal}.png`}
+                  alt={displayPal}
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <span className="text-white text-sm font-medium">
+            {PAL_DISPLAY_NAMES[displayPal] || displayPal}
+          </span>
+        </div>
       </div>
     </FeatureCard>
   );
