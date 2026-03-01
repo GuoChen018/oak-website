@@ -168,9 +168,17 @@ function PersistentTimerCard() {
       </div>
 
       {/* Timer display - right-aligned, fits inside the 90px notch */}
-      <div className="relative z-10 flex justify-end mt-[20px]" style={{ marginRight: 44 }}>
-        <span className="text-white text-4xl font-semibold tracking-tight" style={{ minWidth: "140px", textAlign: "right" }}>
-          {display}
+      <div className="relative z-10 flex justify-end mt-[26px]" style={{ marginRight: 44 }}>
+        <span className="text-white text-4xl font-semibold tracking-tight flex">
+          {display.split("").map((char, i) => (
+            <span
+              key={i}
+              className="inline-flex justify-center"
+              style={{ width: char === ":" ? "10px" : "21px" }}
+            >
+              {char}
+            </span>
+          ))}
         </span>
       </div>
 
