@@ -105,8 +105,8 @@ function CustomFocusPalCard() {
       </div>
 
       {/* Cat image - centered inside the 90px notch area */}
-      <div className="relative z-10 ml-[34px] mt-[13px]">
-        <div className="relative w-[64px] h-[64px]">
+      <div className="relative z-10 ml-[38px] mt-[15px]">
+        <div className="relative w-[56px] h-[56px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -174,7 +174,7 @@ function PersistentTimerCard() {
             <span
               key={i}
               className="inline-flex justify-center"
-              style={{ width: char === ":" ? "10px" : "21px" }}
+              style={{ width: char === ":" ? "12px" : "24px" }}
             >
               {char}
             </span>
@@ -309,7 +309,7 @@ function FocusPatternsCard() {
             ))}
           </div>
 
-          {/* Top Pals & Genre - each in its own container */}
+          {/* Top Pals & Genre */}
           <div className="flex gap-2 flex-1">
             <div className="flex-1 bg-[#2A2A2C] rounded-xl p-3">
               <div className="text-[#777] text-xs font-medium mb-2">
@@ -362,7 +362,7 @@ function FocusPatternsCard() {
             </div>
           </div>
 
-          <div className="mt-1">
+          <div className="mt-1 hidden md:block">
             <h3 className="text-white text-lg font-semibold">Focus Patterns</h3>
             <p className="text-[#999] text-sm mt-1">
               Your habits and stats, beautifully tracked.
@@ -445,6 +445,14 @@ function FocusPatternsCard() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Title below calendar on mobile */}
+        <div className="mt-1 md:hidden">
+          <h3 className="text-white text-lg font-semibold">Focus Patterns</h3>
+          <p className="text-[#999] text-sm mt-1">
+            Your habits and stats, beautifully tracked.
+          </p>
         </div>
       </div>
     </FeatureCard>
