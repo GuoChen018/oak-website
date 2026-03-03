@@ -596,10 +596,10 @@ function TaskLogCard() {
 // ─── Card 5: Focus Music ────────────────────────────────────────────────────
 
 const MUSIC_GENRES = [
-  { name: "Piano", icon: "/piano-icon.png", audio: "/music-samples/piano.m4a" },
-  { name: "Lo-fi", icon: "/lofi-icon.png", audio: "/music-samples/lofi.m4a" },
-  { name: "Ambient", icon: "/ambient-icon.png", audio: "/music-samples/ambient.m4a" },
-  { name: "Jazz", icon: "/jazz-icon.png", audio: "/music-samples/jazz.m4a" },
+  { name: "Piano", icon: "/piano-icon.png", audio: "/music-samples/piano.mp3" },
+  { name: "Lo-fi", icon: "/lofi-icon.png", audio: "/music-samples/lofi.mp3" },
+  { name: "Ambient", icon: "/ambient-icon.png", audio: "/music-samples/ambient.mp3" },
+  { name: "Jazz", icon: "/jazz-icon.png", audio: "/music-samples/jazz.mp3" },
 ];
 
 const NOTE_SYMBOLS = ["♪", "♫", "♩", "♬"];
