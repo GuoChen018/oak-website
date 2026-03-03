@@ -844,7 +844,7 @@ export function Features() {
       <div className="w-full bg-black rounded-[32px] md:rounded-[64px] py-4 md:py-20 px-3 md:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10 md:mb-14 pt-6 md:pt-0">
-            <h2 className="text-white text-3xl md:text-4xl font-medium">
+            <h2 className="text-white text-2xl md:text-4xl font-medium">
               Meet your new focus setup
             </h2>
             <p className="text-[#999] text-base md:text-lg mt-3">
