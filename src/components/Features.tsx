@@ -419,7 +419,7 @@ function FocusPatternsCard() {
                     >
                       {isHovered && !isEmpty && (
                         <span
-                          className="text-[8px] font-medium"
+                          className="text-[10px] font-medium"
                           style={{
                             color:
                               day.intensity > 0.6 ? "#1A1A1A" : "#FFF",
@@ -430,7 +430,7 @@ function FocusPatternsCard() {
                       )}
                       {isToday && !isHovered && (
                         <span
-                          className="text-[8px] font-medium"
+                          className="text-[10px] font-medium"
                           style={{
                             color:
                               day.intensity > 0.6 ? "#1A1A1A" : "#FFF",
@@ -773,14 +773,14 @@ function FocusPalsCard() {
 
       <div className="flex flex-wrap gap-2">
         {ALL_FOCUS_PALS.map((pal) => (
-          <motion.button
+          <motion.div
             key={pal}
             onClick={() => setSelectedPal(pal)}
             whileTap={{ scale: 0.95 }}
-            className={`relative w-10 h-10 rounded-xl cursor-pointer transition-all duration-200 ${
+            className={`relative w-10 h-10 rounded-xl md:cursor-pointer transition-all duration-200 pointer-events-none md:pointer-events-auto ${
               selectedPal === pal
-                ? "bg-white/20 ring-1 ring-white/30"
-                : "hover:bg-white/10"
+                ? "md:bg-white/20 md:ring-1 md:ring-white/30"
+                : "md:hover:bg-white/10"
             }`}
           >
             <Image
@@ -790,7 +790,7 @@ function FocusPalsCard() {
               className="object-contain p-1"
               unoptimized
             />
-          </motion.button>
+          </motion.div>
         ))}
       </div>
     </FeatureCard>
@@ -841,7 +841,7 @@ function YourMusicCard() {
 export function Features() {
   return (
     <section className="w-full py-16">
-      <div className="w-full bg-black rounded-[32px] md:rounded-[64px] py-12 md:py-20 px-3 md:px-8">
+      <div className="w-full bg-black rounded-[32px] md:rounded-[64px] py-4 md:py-20 px-3 md:px-8">
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
           <CustomFocusPalCard />
           <PersistentTimerCard />
@@ -849,8 +849,6 @@ export function Features() {
           <TaskLogCard />
           <FocusMusicCard />
           <FocusPalsCard />
-          <AnyScreenCard />
-          <YourMusicCard />
         </div>
       </div>
     </section>
