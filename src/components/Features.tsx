@@ -75,7 +75,7 @@ function FeatureCard({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
-      className={`bg-[#1C1C1E] rounded-2xl p-6 ${colSpan ? "md:col-span-2" : ""} ${className}`}
+      className={`bg-[#1C1C1E] rounded-[20px] md:rounded-[32px] p-6 ${colSpan ? "md:col-span-2" : ""} ${className}`}
     >
       {children}
     </motion.div>
@@ -697,7 +697,7 @@ function FocusMusicCard() {
               <motion.div
                 animate={hoveredGenre === genre.name ? { scale: 1.12 } : { scale: 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="w-20 h-20 bg-[#2A2A2C] rounded-2xl flex items-center justify-center cursor-pointer relative"
+                className="w-[72px] h-[72px] md:w-20 md:h-20 bg-[#2A2A2C] rounded-2xl flex items-center justify-center cursor-pointer relative"
               >
                 <Image
                   src={genre.icon}
@@ -842,6 +842,16 @@ export function Features() {
   return (
     <section className="w-full py-16">
       <div className="w-full bg-black rounded-[32px] md:rounded-[64px] py-4 md:py-20 px-3 md:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10 md:mb-14 pt-6 md:pt-0">
+            <h2 className="text-white text-3xl md:text-4xl font-medium">
+              Meet your new focus setup
+            </h2>
+            <p className="text-[#999] text-base md:text-lg mt-3">
+              Timer, calm music, and cute focus pals — all to help you focus and get things done.
+            </p>
+          </div>
+        </div>
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
           <CustomFocusPalCard />
           <PersistentTimerCard />

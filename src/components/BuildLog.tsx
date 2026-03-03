@@ -104,7 +104,7 @@ function BuildLogEntryRow({ entry }: { entry: BuildLogEntry }) {
     <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-0 md:gap-8 py-10">
       {/* Date column */}
       <div className="mb-4 md:mb-0">
-        <div className="flex items-center gap-2 md:mt-1.5">
+        <div className="flex items-center gap-2 md:mt-1.5 md:sticky md:top-8">
           <span className="w-1.5 h-1.5 rounded-full bg-gray-900 flex-shrink-0" />
           <span className="text-sm text-gray-500">{entry.date}</span>
         </div>
