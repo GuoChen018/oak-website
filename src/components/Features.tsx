@@ -805,39 +805,208 @@ function FocusPalsCard() {
   );
 }
 
-// ─── Card 7: Any Screen (placeholder) ───────────────────────────────────────
+// ─── Card 7: Works on any size ───────────────────────────────────────────────
 
 function AnyScreenCard() {
   return (
     <FeatureCard className="flex flex-col justify-between min-h-[220px]">
-      <div className="flex-1 flex items-center justify-center gap-4 py-4">
-        <div className="w-20 h-14 bg-[#2A2A2C] rounded-lg border border-[#3A3A3A]" />
-        <div className="w-28 h-18 bg-[#2A2A2C] rounded-lg border border-[#3A3A3A]" />
+      <div className="flex-1 flex items-center justify-center gap-8 py-4">
+        {/* Laptop */}
+        <div className="flex flex-col items-center">
+          <div className="relative w-[120px] h-[78px] bg-[#2A2A2C] rounded-lg border border-[#3A3A3A]">
+            <div className="absolute inset-[8px] bottom-[10px] bg-[#3A3A3C] rounded-[4px]" />
+            <div className="absolute bottom-[8px] left-[8px] right-[8px] h-[3px] bg-[#3A3A3C] rounded-full" />
+          </div>
+          <div className="w-[140px] h-[6px] bg-[#2A2A2C] rounded-b-lg border border-t-0 border-[#3A3A3A] mt-[2px]" />
+        </div>
+        {/* Monitor */}
+        <div className="flex flex-col items-center">
+          <div className="relative w-[110px] h-[80px] bg-[#2A2A2C] rounded-lg border border-[#3A3A3A]">
+            <div className="absolute inset-[8px] bg-[#3A3A3C] rounded-[4px]" />
+          </div>
+          <div className="w-[8px] h-[14px] bg-[#3A3A3A]" />
+          <div className="w-[32px] h-[4px] bg-[#3A3A3A] rounded-full" />
+        </div>
       </div>
       <div>
-        <h3 className="text-white text-lg font-semibold">Any Screen</h3>
+        <h3 className="text-white text-lg font-semibold">Works on any size</h3>
         <p className="text-[#999] text-sm mt-1">
-          Macbook, monitor, or both. Works even without a notch.
+          Macbook, monitor, or both. Works also if you don&apos;t have a notch.
         </p>
       </div>
     </FeatureCard>
   );
 }
 
-// ─── Card 8: Your Music (placeholder) ───────────────────────────────────────
+// ─── Card 8: Stay in Flow State ──────────────────────────────────────────────
 
-function YourMusicCard() {
+function FlowStateCard() {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const startedRef = useRef(false);
+  const [phase, setPhase] = useState<"idle" | "countdown" | "extension">("idle");
+  const [timeRemaining, setTimeRemaining] = useState(5);
+  const [extensionProgress, setExtensionProgress] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const progressRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (!cardRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !startedRef.current) {
+          startedRef.current = true;
+          setPhase("countdown");
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (phase === "countdown") {
+      timerRef.current = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            clearInterval(timerRef.current!);
+            timerRef.current = null;
+            setPhase("extension");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => {
+        if (timerRef.current) clearInterval(timerRef.current);
+      };
+    }
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase === "extension") {
+      let progress = 0;
+      progressRef.current = setInterval(() => {
+        progress += 0.05 / 5;
+        if (progress >= 1) {
+          clearInterval(progressRef.current!);
+          progressRef.current = null;
+          setExtensionProgress(0);
+          setTimeRemaining(5);
+          setPhase("countdown");
+          return;
+        }
+        setExtensionProgress(progress);
+      }, 50);
+      return () => {
+        if (progressRef.current) clearInterval(progressRef.current);
+      };
+    }
+  }, [phase]);
+
+  const handleExtend = (minutes: number) => {
+    if (progressRef.current) {
+      clearInterval(progressRef.current);
+      progressRef.current = null;
+    }
+    setExtensionProgress(0);
+    setTimeRemaining(minutes * 60);
+    setPhase("countdown");
+  };
+
+  const mins = Math.floor(timeRemaining / 60);
+  const secs = timeRemaining % 60;
+  const display = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+
+  const isExtension = phase === "extension";
+  const notchHeight = isExtension ? 105 : 50;
+
   return (
-    <FeatureCard className="flex flex-col justify-between min-h-[220px]">
-      <div className="flex-1 flex items-center justify-center gap-3 py-4">
-        <div className="w-12 h-12 bg-[#2A2A2C] rounded-full border border-[#3A3A3A]" />
-        <div className="w-12 h-[2px] bg-[#3A3A3A]" />
-        <div className="w-12 h-12 bg-[#2A2A2C] rounded-full border border-[#3A3A3A]" />
+    <FeatureCard className="flex flex-col overflow-hidden relative min-h-[260px] pt-0 px-6 pb-5">
+      <div ref={cardRef} className="absolute inset-0 pointer-events-none" />
+
+      {/* Full-width notch with left ear, body, and right ear */}
+      <div className="absolute top-0 left-[20px] w-[24px] h-[24px] z-10">
+        <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="none">
+          <path d="M24 0 L24 24 Q24 0 0 0 Z" fill="black" />
+        </svg>
       </div>
-      <div>
-        <h3 className="text-white text-lg font-semibold">Your Music</h3>
+      <motion.div
+        className="absolute top-0 left-[44px] bg-black overflow-hidden z-20 flex flex-col"
+        style={{ right: 44, borderBottomLeftRadius: 18, borderBottomRightRadius: 18 }}
+        animate={{ height: notchHeight }}
+        transition={{ type: "spring", stiffness: 200, damping: 18 }}
+      >
+        {/* Pal + Timer row */}
+        <div className="flex items-center justify-between px-3 pt-[10px] pb-1">
+          <div className="relative w-[28px] h-[28px] ml-[-2px]">
+            <Image
+              src="/focus-pals/cat.png"
+              alt="Focus pal"
+              fill
+              className="object-contain"
+              unoptimized
+            />
+          </div>
+          <span
+            className="text-white text-lg font-semibold tracking-tight flex"
+            style={{ fontVariantNumeric: "tabular-nums" }}
+          >
+            {display.split("").map((char, i) => (
+              <span
+                key={i}
+                className="inline-flex justify-center"
+                style={{
+                  width: char === ":" ? "7px" : "13px",
+                  fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif",
+                }}
+              >
+                {char}
+              </span>
+            ))}
+          </span>
+        </div>
+
+        {/* Extension UI — buttons (inside notch, clipped on collapse) */}
+        <div className="flex gap-3 px-3 mt-2">
+          <button
+            onClick={() => handleExtend(5)}
+            className="flex-1 text-white text-sm font-medium py-2 bg-white/15 hover:bg-white/25 rounded-full transition-colors"
+          >
+            + 5 min
+          </button>
+          <button
+            onClick={() => handleExtend(25)}
+            className="flex-1 text-white text-sm font-medium py-2 bg-white/15 hover:bg-white/25 rounded-full transition-colors"
+          >
+            + 25 min
+          </button>
+        </div>
+
+        {/* Progress bar pinned to bottom edge */}
+        <div className="mt-auto w-full h-[6px] bg-[#2A2A2A]">
+          <div
+            className="h-full transition-none"
+            style={{
+              width: `${extensionProgress * 100}%`,
+              background: "linear-gradient(to right, #3A3A3A, #888888)",
+            }}
+          />
+        </div>
+      </motion.div>
+      <div className="absolute top-0 w-[24px] h-[24px] z-10" style={{ right: 20 }}>
+        <svg width="100%" height="100%" viewBox="0 0 24 24" preserveAspectRatio="none">
+          <path d="M0 0 L0 24 Q0 0 24 0 Z" fill="black" />
+        </svg>
+      </div>
+
+      {/* Spacer to push title below notch */}
+      <div style={{ height: notchHeight }} />
+
+      <div className="mt-auto">
+        <h3 className="text-white text-lg font-semibold">Stay in Flow State</h3>
         <p className="text-[#999] text-sm mt-1">
-          Connect Spotify. Play your own tracks.
+          Add more time to your session after completed to stay in the zone.
         </p>
       </div>
     </FeatureCard>
@@ -867,6 +1036,8 @@ export function Features() {
           <TaskLogCard />
           <FocusMusicCard />
           <FocusPalsCard />
+          <AnyScreenCard />
+          <FlowStateCard />
         </div>
       </div>
     </section>
