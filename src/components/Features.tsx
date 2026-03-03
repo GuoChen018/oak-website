@@ -371,7 +371,7 @@ function FocusPatternsCard() {
         </div>
 
         {/* Right: Calendar in its own container */}
-        <div className="flex-1 bg-[#2A2A2C] rounded-xl p-3">
+        <div className="flex-1 bg-[#2A2A2C] rounded-xl p-3 flex flex-col">
           {/* Calendar header */}
           <div className="flex items-center gap-2 mb-2">
             <span className="text-[#777] text-xs font-medium">
@@ -380,7 +380,7 @@ function FocusPatternsCard() {
           </div>
 
           {/* Calendar Grid */}
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5 flex-1">
             <div className="grid grid-cols-7 gap-1.5">
               {DAY_LABELS.map((label, i) => (
                 <div
@@ -393,7 +393,7 @@ function FocusPatternsCard() {
             </div>
 
             {calendarData.map((week, weekIdx) => (
-              <div key={weekIdx} className="grid grid-cols-7 gap-1.5">
+              <div key={weekIdx} className="grid grid-cols-7 gap-1.5 flex-1">
                 {week.map((day, dayIdx) => {
                   const isToday =
                     weekIdx === todayCell.week && dayIdx === todayCell.day;
@@ -405,7 +405,7 @@ function FocusPatternsCard() {
                   return (
                     <div
                       key={dayIdx}
-                      className="relative h-[26px] rounded-[4px] flex items-center justify-center cursor-default"
+                      className="relative rounded-[4px] flex items-center justify-center cursor-default min-h-[22px]"
                       style={{
                         backgroundColor: isEmpty
                           ? "transparent"
