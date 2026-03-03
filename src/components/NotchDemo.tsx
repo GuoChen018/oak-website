@@ -18,6 +18,7 @@ const MUSIC_CATEGORIES: { id: MusicCategory; label: string }[] = [
   { id: "piano", label: "Piano" },
   { id: "lofi", label: "LoFi" },
   { id: "ambient", label: "Ambient" },
+  { id: "jazz", label: "Jazz" },
 ];
 
 interface NotchDemoProps {
@@ -770,6 +771,7 @@ const MUSIC_ICON_PATHS: Record<MusicCategory, string> = {
   piano: "/piano-icon.png",
   lofi: "/lofi-icon.png",
   ambient: "/ambient-icon.png",
+  jazz: "/jazz-icon.png",
 };
 
 function MusicSelector({ currentCategory, onSelect }: MusicSelectorProps) {

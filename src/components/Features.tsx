@@ -584,7 +584,7 @@ const MUSIC_GENRES = [
   { name: "Piano", icon: "/piano-icon.png", audio: "/music-samples/piano.m4a" },
   { name: "Lo-fi", icon: "/lofi-icon.png", audio: "/music-samples/lofi.m4a" },
   { name: "Ambient", icon: "/ambient-icon.png", audio: "/music-samples/ambient.m4a" },
-  { name: "Jazz", icon: "/jazz-icon.png", audio: null },
+  { name: "Jazz", icon: "/jazz-icon.png", audio: "/music-samples/jazz.m4a" },
 ];
 
 const NOTE_SYMBOLS = ["♪", "♫", "♩", "♬"];

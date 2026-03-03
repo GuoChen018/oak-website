@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 
-export type MusicCategory = "piano" | "lofi" | "ambient";
+export type MusicCategory = "piano" | "lofi" | "ambient" | "jazz";
 
 interface UseAudioReturn {
   isPlaying: boolean;
@@ -17,6 +17,7 @@ const AUDIO_FILES: Record<MusicCategory, string> = {
   piano: "/audio/piano.mp3",
   lofi: "/audio/lofi.mp3",
   ambient: "/audio/ambient.mp3",
+  jazz: "/audio/jazz.mp3",
 };
 
 // Preloaded audio cache
