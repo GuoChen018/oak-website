@@ -810,28 +810,53 @@ function FocusPalsCard() {
 function AnyScreenCard() {
   return (
     <FeatureCard className="flex flex-col justify-between min-h-[220px]">
-      <div className="flex-1 flex items-center justify-center gap-8 py-4">
+      <div className="flex-1 flex items-end justify-center gap-8 py-4 mb-4">
         {/* Laptop */}
         <div className="flex flex-col items-center">
-          <div className="relative w-[120px] h-[78px] bg-[#2A2A2C] rounded-lg border border-[#3A3A3A]">
-            <div className="absolute inset-[8px] bottom-[10px] bg-[#3A3A3C] rounded-[4px]" />
-            <div className="absolute bottom-[8px] left-[8px] right-[8px] h-[3px] bg-[#3A3A3C] rounded-full" />
+          <div className="relative w-[120px] h-[78px] bg-[#3A3A3C] rounded-lg">
+            {/* Notch body */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[28px] h-[10px] bg-[#1C1C1E] rounded-b-[5px]" />
+            {/* Left ear */}
+            <div className="absolute top-0 left-1/2 w-[6px] h-[6px]" style={{ marginLeft: -20 }}>
+              <svg width="100%" height="100%" viewBox="0 0 6 6" preserveAspectRatio="none">
+                <path d="M6 0 L6 6 Q6 0 0 0 Z" fill="#1C1C1E" />
+              </svg>
+            </div>
+            {/* Right ear */}
+            <div className="absolute top-0 left-1/2 w-[6px] h-[6px]" style={{ marginLeft: 14 }}>
+              <svg width="100%" height="100%" viewBox="0 0 6 6" preserveAspectRatio="none">
+                <path d="M0 0 L0 6 Q0 0 6 0 Z" fill="#1C1C1E" />
+              </svg>
+            </div>
           </div>
-          <div className="w-[140px] h-[6px] bg-[#2A2A2C] rounded-b-lg border border-t-0 border-[#3A3A3A] mt-[2px]" />
+          <div className="w-[140px] h-[6px] bg-[#3A3A3C] rounded-b-lg mt-[6px]" />
         </div>
         {/* Monitor */}
         <div className="flex flex-col items-center">
-          <div className="relative w-[110px] h-[80px] bg-[#2A2A2C] rounded-lg border border-[#3A3A3A]">
-            <div className="absolute inset-[8px] bg-[#3A3A3C] rounded-[4px]" />
+          <div className="relative w-[150px] h-[100px] bg-[#3A3A3C] rounded-lg">
+            {/* Notch body */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[28px] h-[10px] bg-[#1C1C1E] rounded-b-[5px]" />
+            {/* Left ear */}
+            <div className="absolute top-0 left-1/2 w-[6px] h-[6px]" style={{ marginLeft: -20 }}>
+              <svg width="100%" height="100%" viewBox="0 0 6 6" preserveAspectRatio="none">
+                <path d="M6 0 L6 6 Q6 0 0 0 Z" fill="#1C1C1E" />
+              </svg>
+            </div>
+            {/* Right ear */}
+            <div className="absolute top-0 left-1/2 w-[6px] h-[6px]" style={{ marginLeft: 14 }}>
+              <svg width="100%" height="100%" viewBox="0 0 6 6" preserveAspectRatio="none">
+                <path d="M0 0 L0 6 Q0 0 6 0 Z" fill="#1C1C1E" />
+              </svg>
+            </div>
           </div>
-          <div className="w-[8px] h-[14px] bg-[#3A3A3A]" />
-          <div className="w-[32px] h-[4px] bg-[#3A3A3A] rounded-full" />
+          <div className="w-[8px] h-[14px] bg-[#3A3A3C]" />
+          <div className="w-[32px] h-[4px] bg-[#3A3A3C] rounded-full" />
         </div>
       </div>
       <div>
         <h3 className="text-white text-lg font-semibold">Works on any size</h3>
         <p className="text-[#999] text-sm mt-1">
-          Macbook, monitor, or both. Works also if you don&apos;t have a notch.
+          MacBook, monitor, or both — even without a notch.
         </p>
       </div>
     </FeatureCard>
@@ -957,7 +982,7 @@ function FlowStateCard() {
                 key={i}
                 className="inline-flex justify-center"
                 style={{
-                  width: char === ":" ? "7px" : "13px",
+                  width: char === ":" ? "6px" : "11px",
                   fontFamily: "-apple-system, BlinkMacSystemFont, system-ui, sans-serif",
                 }}
               >
@@ -1006,7 +1031,7 @@ function FlowStateCard() {
       <div className="mt-auto">
         <h3 className="text-white text-lg font-semibold">Stay in Flow State</h3>
         <p className="text-[#999] text-sm mt-1">
-          Add more time to your session after completed to stay in the zone.
+          Extend your timer to stay in the zone.
         </p>
       </div>
     </FeatureCard>
