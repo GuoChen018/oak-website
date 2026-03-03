@@ -19,6 +19,32 @@ interface BuildLogEntry {
 
 const BUILD_LOG_ENTRIES: BuildLogEntry[] = [
   {
+    date: "March 3, 2026",
+    features: [
+      {
+        title: "Flow State Extension",
+        description:
+          "When your timer ends, Oak now asks if you want to add more time to your session. Once you focus for 90+ minutes, you will be prompted to take a break.",
+        image: "/flow-extension.png",
+        imageAspectRatio: "1024 / 576",
+      },
+      {
+        title: "Jazz Focus Music",
+        description:
+          "A brand new jazz genre with 20+ tracks. From mellow café vibes to smooth saxophone sessions.",
+        image: "/jazz-genre.png",
+        imageAspectRatio: "1024 / 576",
+      },
+    ],
+    improvements: [
+      "Added feature sections in Oak landing page",
+      "Restored App Management permission check after onboarding",
+    ],
+    bugFixes: [
+      "Fixed bug when I press on task input and Oak collapses",
+    ]
+  },
+  {
     date: "February 23, 2026",
     features: [
       {
