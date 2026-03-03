@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -285,8 +285,8 @@ function FocusPatternsCard() {
 
   return (
     <FeatureCard colSpan>
-      <div className="flex flex-col md:flex-row gap-3 md:items-stretch">
-        {/* Left: Stats + Top Pals/Genre */}
+      <div className="flex flex-col md:flex-row gap-3">
+        {/* Left: Stats + Top Pals/Genre + Title */}
         <div className="flex-1 flex flex-col gap-3">
           {/* Stats row */}
           <div className="flex gap-2">
@@ -361,6 +361,13 @@ function FocusPatternsCard() {
               </div>
             </div>
           </div>
+
+          <div className="mt-1">
+            <h3 className="text-white text-lg font-semibold">Focus Patterns</h3>
+            <p className="text-[#999] text-sm mt-1">
+              Your habits and stats, beautifully tracked.
+            </p>
+          </div>
         </div>
 
         {/* Right: Calendar in its own container */}
@@ -370,20 +377,6 @@ function FocusPatternsCard() {
             <span className="text-[#777] text-xs font-medium">
               Monthly Usage
             </span>
-            <span className="text-[#555] text-xs">February</span>
-            <svg
-              className="w-3 h-3 text-[#555]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
           </div>
 
           {/* Calendar Grid */}
@@ -453,13 +446,6 @@ function FocusPatternsCard() {
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="mt-4">
-        <h3 className="text-white text-lg font-semibold">Focus Patterns</h3>
-        <p className="text-[#999] text-sm mt-1">
-          Your habits and stats, beautifully tracked.
-        </p>
       </div>
     </FeatureCard>
   );
@@ -595,33 +581,135 @@ function TaskLogCard() {
 // ─── Card 5: Focus Music ────────────────────────────────────────────────────
 
 const MUSIC_GENRES = [
-  { name: "Piano", icon: "/piano-icon.png" },
-  { name: "Lo-fi", icon: "/lofi-icon.png" },
-  { name: "Ambient", icon: "/ambient-icon.png" },
-  { name: "Jazz", icon: "/jazz-icon.png" },
+  { name: "Piano", icon: "/piano-icon.png", audio: "/music-samples/piano.m4a" },
+  { name: "Lo-fi", icon: "/lofi-icon.png", audio: "/music-samples/lofi.m4a" },
+  { name: "Ambient", icon: "/ambient-icon.png", audio: "/music-samples/ambient.m4a" },
+  { name: "Jazz", icon: "/jazz-icon.png", audio: null },
 ];
 
+const NOTE_SYMBOLS = ["♪", "♫", "♩", "♬"];
+
+function FloatingNotes({ isActive }: { isActive: boolean }) {
+  if (!isActive) return null;
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-visible">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <motion.span
+          key={i}
+          className="absolute text-white/30 text-sm"
+          initial={{
+            opacity: 0,
+            x: Math.random() * 30 - 15,
+            y: 0,
+          }}
+          animate={{
+            opacity: [0, 0.6, 0],
+            y: -50 - Math.random() * 20,
+            x: Math.random() * 40 - 20,
+          }}
+          transition={{
+            duration: 2.5 + Math.random() * 1.5,
+            repeat: Infinity,
+            delay: i * 0.7,
+            ease: "easeOut",
+          }}
+          style={{ left: "50%", bottom: "80%" }}
+        >
+          {NOTE_SYMBOLS[i % NOTE_SYMBOLS.length]}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
 function FocusMusicCard() {
+  const [hoveredGenre, setHoveredGenre] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const fadeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const killAudio = () => {
+    if (fadeTimerRef.current) {
+      clearInterval(fadeTimerRef.current);
+      fadeTimerRef.current = null;
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+  };
+
+  const handleHover = (genre: typeof MUSIC_GENRES[number]) => {
+    killAudio();
+    setHoveredGenre(genre.name);
+    if (genre.audio) {
+      const audio = new Audio(genre.audio);
+      audio.volume = 0;
+      audioRef.current = audio;
+      audio.play().catch(() => {});
+      const targetVolume = 0.3;
+      fadeTimerRef.current = setInterval(() => {
+        if (audioRef.current !== audio) {
+          clearInterval(fadeTimerRef.current!);
+          return;
+        }
+        if (audio.volume < targetVolume - 0.01) {
+          audio.volume = Math.min(targetVolume, audio.volume + 0.01);
+        } else {
+          clearInterval(fadeTimerRef.current!);
+          fadeTimerRef.current = null;
+        }
+      }, 30);
+    }
+  };
+
+  const handleLeave = () => {
+    setHoveredGenre(null);
+    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (fadeTimerRef.current) {
+      clearInterval(fadeTimerRef.current);
+    }
+    fadeTimerRef.current = setInterval(() => {
+      if (audio.volume > 0.01) {
+        audio.volume = Math.max(0, audio.volume - 0.008);
+      } else {
+        clearInterval(fadeTimerRef.current!);
+        fadeTimerRef.current = null;
+        audio.pause();
+        audio.currentTime = 0;
+        if (audioRef.current === audio) audioRef.current = null;
+      }
+    }, 30);
+  };
+
   return (
     <FeatureCard className="flex flex-col justify-between min-h-[260px]">
       <div className="flex-1 flex items-center justify-center">
-        <div className="flex gap-6">
+        <div className="flex gap-5">
           {MUSIC_GENRES.map((genre) => (
             <div
               key={genre.name}
-              className="flex flex-col items-center gap-2"
+              className="flex flex-col items-center gap-3 relative"
+              onMouseEnter={() => handleHover(genre)}
+              onMouseLeave={handleLeave}
             >
-              <div className="w-14 h-14 bg-[#2A2A2C] rounded-2xl flex items-center justify-center">
+              <motion.div
+                animate={hoveredGenre === genre.name ? { scale: 1.12 } : { scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="w-20 h-20 bg-[#2A2A2C] rounded-2xl flex items-center justify-center cursor-pointer relative"
+              >
                 <Image
                   src={genre.icon}
                   alt={genre.name}
-                  width={32}
-                  height={32}
+                  width={48}
+                  height={48}
                   className="object-contain"
                   unoptimized
                 />
-              </div>
-              <span className="text-[#999] text-xs font-medium">
+                <FloatingNotes isActive={hoveredGenre === genre.name} />
+              </motion.div>
+              <span className={`text-xs font-medium transition-colors duration-200 ${hoveredGenre === genre.name ? "text-white" : "text-[#999]"}`}>
                 {genre.name}
               </span>
             </div>
@@ -629,9 +717,9 @@ function FocusMusicCard() {
         </div>
       </div>
       <div>
-        <h3 className="text-white text-lg font-semibold">Focus Music</h3>
+        <h3 className="text-white text-lg font-semibold">Calm Focus Music</h3>
         <p className="text-[#999] text-sm mt-1">
-          50+ curated tracks to get you in the zone.
+          Over 50+ songs to help you focus and get stuff done.
         </p>
       </div>
     </FeatureCard>
@@ -642,8 +730,6 @@ function FocusMusicCard() {
 
 function FocusPalsCard() {
   const [selectedPal, setSelectedPal] = useState("baby-chick");
-  const [hoveredPal, setHoveredPal] = useState<string | null>(null);
-  const displayPal = hoveredPal || selectedPal;
 
   return (
     <FeatureCard colSpan className="overflow-hidden relative pt-0 px-4 md:px-6 pb-6">
@@ -685,63 +771,27 @@ function FocusPalsCard() {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Left: grid */}
-        <div className="md:w-1/2">
-          <div className="flex flex-wrap gap-2">
-            {ALL_FOCUS_PALS.map((pal) => (
-              <motion.button
-                key={pal}
-                onClick={() => setSelectedPal(pal)}
-                onMouseEnter={() => setHoveredPal(pal)}
-                onMouseLeave={() => setHoveredPal(null)}
-                whileTap={{ scale: 0.95 }}
-                className={`relative w-10 h-10 rounded-xl cursor-pointer transition-all duration-200 ${
-                  selectedPal === pal
-                    ? "bg-white/20 ring-1 ring-white/30"
-                    : hoveredPal === pal
-                      ? "bg-white/15"
-                      : "hover:bg-white/10"
-                }`}
-              >
-                <Image
-                  src={`/focus-pals/${pal}.png`}
-                  alt={PAL_DISPLAY_NAMES[pal] || pal}
-                  fill
-                  className="object-contain p-1"
-                  unoptimized
-                />
-              </motion.button>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: preview card */}
-        <div className="hidden md:flex flex-col items-center justify-center md:w-1/2 md:self-stretch bg-[#2A2A2C] rounded-xl p-4">
-          <div className="relative w-20 h-20 mb-2">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={displayPal}
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.85 }}
-                transition={{ duration: 0.2 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={`/focus-pals/${displayPal}.png`}
-                  alt={displayPal}
-                  fill
-                  className="object-contain"
-                  unoptimized
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          <span className="text-white text-sm font-medium">
-            {PAL_DISPLAY_NAMES[displayPal] || displayPal}
-          </span>
-        </div>
+      <div className="flex flex-wrap gap-2">
+        {ALL_FOCUS_PALS.map((pal) => (
+          <motion.button
+            key={pal}
+            onClick={() => setSelectedPal(pal)}
+            whileTap={{ scale: 0.95 }}
+            className={`relative w-10 h-10 rounded-xl cursor-pointer transition-all duration-200 ${
+              selectedPal === pal
+                ? "bg-white/20 ring-1 ring-white/30"
+                : "hover:bg-white/10"
+            }`}
+          >
+            <Image
+              src={`/focus-pals/${pal}.png`}
+              alt={PAL_DISPLAY_NAMES[pal] || pal}
+              fill
+              className="object-contain p-1"
+              unoptimized
+            />
+          </motion.button>
+        ))}
       </div>
     </FeatureCard>
   );
