@@ -88,6 +88,13 @@ function CustomFocusPalCard() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    CUSTOM_PAL_IMAGES.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % CUSTOM_PAL_IMAGES.length);
     }, 3000);
