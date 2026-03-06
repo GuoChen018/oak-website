@@ -99,7 +99,7 @@ const BUILD_LOG_ENTRIES: BuildLogEntry[] = [
 export function BuildLog() {
   return (
     <motion.section
-      className="w-full max-w-2xl mx-auto px-4"
+      className="w-full max-w-3xl mx-auto px-4"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
