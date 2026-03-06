@@ -639,49 +639,89 @@ function FloatingNotes({ isActive }: { isActive: boolean }) {
 
 function FocusMusicCard() {
   const [hoveredGenre, setHoveredGenre] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioMapRef = useRef<Map<string, HTMLAudioElement>>(new Map());
+  const activeAudioRef = useRef<HTMLAudioElement | null>(null);
   const fadeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioUnlockedRef = useRef(false);
+
+  useEffect(() => {
+    MUSIC_GENRES.forEach((genre) => {
+      if (genre.audio && !audioMapRef.current.has(genre.name)) {
+        const audio = new Audio(genre.audio);
+        audio.preload = "auto";
+        audio.volume = 0;
+        audio.load();
+        audioMapRef.current.set(genre.name, audio);
+      }
+    });
+  }, []);
 
   const killAudio = () => {
     if (fadeTimerRef.current) {
       clearInterval(fadeTimerRef.current);
       fadeTimerRef.current = null;
     }
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current = null;
+    if (activeAudioRef.current) {
+      activeAudioRef.current.pause();
+      activeAudioRef.current.currentTime = 0;
+      activeAudioRef.current = null;
     }
   };
 
-  const handleHover = (genre: typeof MUSIC_GENRES[number]) => {
+  const playGenre = (genreName: string) => {
     killAudio();
+    const audio = audioMapRef.current.get(genreName);
+    if (!audio) return;
+
+    activeAudioRef.current = audio;
+    audio.volume = 0;
+    audio.currentTime = 0;
+    const startPlayback = () => {
+      audio.play().then(() => {
+        audioUnlockedRef.current = true;
+        const targetVolume = 0.3;
+        fadeTimerRef.current = setInterval(() => {
+          if (activeAudioRef.current !== audio) {
+            clearInterval(fadeTimerRef.current!);
+            return;
+          }
+          if (audio.volume < targetVolume - 0.01) {
+            audio.volume = Math.min(targetVolume, audio.volume + 0.01);
+          } else {
+            clearInterval(fadeTimerRef.current!);
+            fadeTimerRef.current = null;
+          }
+        }, 30);
+      }).catch(() => {});
+    };
+
+    if (audio.readyState >= 3) {
+      startPlayback();
+    } else {
+      const onReady = () => {
+        audio.removeEventListener("canplay", onReady);
+        startPlayback();
+      };
+      audio.addEventListener("canplay", onReady);
+    }
+  };
+
+  const handleClick = (genre: typeof MUSIC_GENRES[number]) => {
     setHoveredGenre(genre.name);
-    if (genre.audio) {
-      const audio = new Audio(genre.audio);
-      audio.volume = 0;
-      audioRef.current = audio;
-      audio.play().catch(() => {});
-      const targetVolume = 0.3;
-      fadeTimerRef.current = setInterval(() => {
-        if (audioRef.current !== audio) {
-          clearInterval(fadeTimerRef.current!);
-          return;
-        }
-        if (audio.volume < targetVolume - 0.01) {
-          audio.volume = Math.min(targetVolume, audio.volume + 0.01);
-        } else {
-          clearInterval(fadeTimerRef.current!);
-          fadeTimerRef.current = null;
-        }
-      }, 30);
+    playGenre(genre.name);
+  };
+
+  const handleHover = (genre: typeof MUSIC_GENRES[number]) => {
+    setHoveredGenre(genre.name);
+    if (audioUnlockedRef.current) {
+      playGenre(genre.name);
     }
   };
 
   const handleLeave = () => {
     setHoveredGenre(null);
-    if (!audioRef.current) return;
-    const audio = audioRef.current;
+    if (!activeAudioRef.current) return;
+    const audio = activeAudioRef.current;
     if (fadeTimerRef.current) {
       clearInterval(fadeTimerRef.current);
     }
@@ -693,19 +733,25 @@ function FocusMusicCard() {
         fadeTimerRef.current = null;
         audio.pause();
         audio.currentTime = 0;
-        if (audioRef.current === audio) audioRef.current = null;
+        if (activeAudioRef.current === audio) {
+          activeAudioRef.current = null;
+        }
       }
     }, 30);
   };
 
   return (
-    <FeatureCard className="flex flex-col justify-between min-h-[260px]">
+    <FeatureCard className="flex flex-col justify-between min-h-[260px] relative">
+      <span className="absolute top-4 left-1/2 -translate-x-1/2 text-lg font-handdrawn font-normal text-[#999]">
+        Click to listen!
+      </span>
       <div className="flex-1 flex items-center justify-center">
         <div className="flex gap-5">
           {MUSIC_GENRES.map((genre) => (
             <div
               key={genre.name}
               className="flex flex-col items-center gap-3 relative"
+              onClick={() => handleClick(genre)}
               onMouseEnter={() => handleHover(genre)}
               onMouseLeave={handleLeave}
             >
