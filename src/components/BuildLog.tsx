@@ -19,6 +19,16 @@ interface BuildLogEntry {
 
 const BUILD_LOG_ENTRIES: BuildLogEntry[] = [
   {
+    date: "March 5, 2026",
+    improvements: [
+      "Improved app reliability monitoring with better analytics",
+      "Added diagnostic logging to help investigate non-responsive buttons",
+    ],
+    bugFixes: [
+      "Fixed a bug where trial status could reset after OS updates",
+    ],
+  },
+  {
     date: "March 3, 2026",
     features: [
       {
