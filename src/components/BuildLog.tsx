@@ -19,6 +19,13 @@ interface BuildLogEntry {
 
 const BUILD_LOG_ENTRIES: BuildLogEntry[] = [
   {
+    date: "March 6, 2026",
+    improvements: [
+      "Oak now automatically launches on startup after onboarding",
+      "Added friendly reminder notifications during your trial period",
+    ],
+  },
+  {
     date: "March 5, 2026",
     improvements: [
       "Improved app reliability monitoring with better analytics",
