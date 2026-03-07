@@ -19,18 +19,30 @@ interface BuildLogEntry {
 
 const BUILD_LOG_ENTRIES: BuildLogEntry[] = [
   {
-    date: "March 6, 2026",
+    date: "March 7, 2026",
+    features: [
+      {
+        title: "Stopwatch Mode",
+        description:
+          "A new count-up stopwatch option for open-ended focus sessions when you don't want a countdown.",
+        image: "/stopwatch.png",
+        imageAspectRatio: "1024 / 477",
+      },
+      {
+        title: "Task Name in Notch",
+        description:
+          "You can now optionally display your current task in the collapsed notch while focusing.",
+        image: "/task-name.png",
+        imageAspectRatio: "1024 / 477",
+      },
+    ],
     improvements: [
-      "Oak now automatically launches on startup after onboarding",
-      "Added friendly reminder notifications during your trial period",
+      "Music now stops when your timer completes",
+      "Improved auto-update reliability",
     ],
   },
   {
     date: "March 5, 2026",
-    improvements: [
-      "Improved app reliability monitoring with better analytics",
-      "Added diagnostic logging to help investigate non-responsive buttons",
-    ],
     bugFixes: [
       "Fixed a bug where trial status could reset after OS updates",
     ],
